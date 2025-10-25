@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Earning Dashboard | InternLearn</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #1a1a2e, #16213e);
+      color: white;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 50px 10px;
+    }
+
+    .dashboard {
+      width: 100%;
+      max-width: 800px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      padding: 30px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    h1 {
+      text-align: center;
+      color: #00ffff;
+      margin-bottom: 30px;
+    }
+
+    .stats {
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      gap: 20px;
+      margin-bottom: 40px;
+    }
+
+    .card {
+      background: rgba(0, 255, 255, 0.1);
+      border: 2px solid #00ffff;
+      border-radius: 12px;
+      padding: 20px;
+      width: 220px;
+      text-align: center;
+    }
+
+    .card h3 {
+      color: #00ffff;
+      margin-bottom: 10px;
+    }
+
+    .card p {
+      font-size: 20px;
+      font-weight: 600;
+    }
+
+    .level {
+      font-size: 18px;
+      color: #00ff99;
+      margin-top: 10px;
+    }
+
+    .redeem-section {
+      margin-top: 30px;
+    }
+
+    .redeem-section h2 {
+      color: #00ff99;
+      margin-bottom: 15px;
+    }
+
+    .redeem-btn {
+      background: #00ffff;
+      color: #111;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .redeem-btn:hover {
+      background: #00c2c2;
+    }
+
+    .history {
+      margin-top: 30px;
+    }
+
+    .history h3 {
+      color: #00ffff;
+      margin-bottom: 10px;
+    }
+
+    .history-item {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 12px 15px;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .history-item span {
+      font-size: 15px;
+    }
+  </style>
+</head>
+<body>
+  <div class="dashboard">
+    <h1>💰 Earning Dashboard</h1>
+
+    <div class="stats">
+      <div class="card">
+        <h3>Total XP</h3>
+        <p id="totalXP">0</p>
+      </div>
+
+      <div class="card">
+        <h3>Coins (₹)</h3>
+        <p id="coins">0</p>
+      </div>
+
+      <div class="card">
+        <h3>Badges</h3>
+        <p id="badge">Rookie 🥉</p>
+      </div>
+    </div>
+
+    <div class="redeem-section">
+      <h2>🎁 Redeem Your Coins</h2>
+      <button class="redeem-btn" id="redeemBtn">Redeem ₹10 (1000 XP)</button>
+    </div>
+
+    <div class="history">
+      <h3>🧾 Redeem History</h3>
+      <div id="historyList"></div>
+    </div>
+  </div>
+
+  <!-- Firebase + Firestore -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
+    import { getFirestore, doc, getDoc, updateDoc, setDoc, collection, addDoc, getDocs } 
+      from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_PROJECT.firebaseapp.com",
+      projectId: "YOUR_PROJECT_ID",
+      storageBucket: "YOUR_PROJECT.appspot.com",
+      messagingSenderId: "YOUR_MSG_ID",
+      appId: "YOUR_APP_ID"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const userEmail = localStorage.getItem("userEmail") || "guest@example.com";
+    const xpEl = document.getElementById("totalXP");
+    const coinEl = document.getElementById("coins");
+    const badgeEl = document.getElementById("badge");
+    const historyEl = document.getElementById("historyList");
+
+    async function loadEarnings() {
+      const userRef = doc(db, "leaderboard", userEmail);
+      const userSnap = await getDoc(userRef);
+
+      if (userSnap.exists()) {
+        const userData = userSnap.data();
+        const xp = userData.xp || 0;
+        xpEl.innerText = xp;
+        coinEl.innerText = (xp / 100).toFixed(2); // 100 XP = ₹1
+
+        if (xp < 1000) badgeEl.innerText = "Rookie 🥉";
+        else if (xp < 5000) badgeEl.innerText = "Pro 🥈";
+        else badgeEl.innerText = "Legend 🥇";
+      }
+
+      // Redeem history
+      const historyRef = collection(db, "redeemHistory");
+      const historySnap = await getDocs(historyRef);
+      historyEl.innerHTML = "";
+      historySnap.forEach(doc => {
+        const item = doc.data();
+        if (item.email === userEmail) {
+          historyEl.innerHTML += `
+            <div class="history-item">
+              <span>${item.date}</span>
+              <span>₹${item.amount}</span>
+            </div>
+          `;
+        }
+      });
+    }
+
+    document.getElementById("redeemBtn").addEventListener("click", async () => {
+      const userRef = doc(db, "leaderboard", userEmail);
+      const userSnap = await getDoc(userRef);
+
+      if (userSnap.exists()) {
+        const userData = userSnap.data();
+        const currentXP = userData.xp || 0;
+
+        if (currentXP >= 1000) {
+          const newXP = currentXP - 1000;
+          await updateDoc(userRef, { xp: newXP });
+
+          const redeemRef = collection(db, "redeemHistory");
+          await addDoc(redeemRef, {
+            email: userEmail,
+            amount: 10,
+            date: new Date().toLocaleString()
+          });
+
+          alert("🎉 Redeem successful! ₹10 credited.");
+          loadEarnings();
+        } else {
+          alert("❌ Not enough XP to redeem ₹10!");
+        }
+      }
+    });
+
+    loadEarnings();
+  </script>
+</body>
+</html>

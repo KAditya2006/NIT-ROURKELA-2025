@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Challenge Mode | InternLearn</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #1a1a2e, #16213e);
+      color: white;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+
+    .container {
+      background: rgba(255, 255, 255, 0.08);
+      padding: 40px 50px;
+      border-radius: 16px;
+      width: 90%;
+      max-width: 600px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 28px;
+      color: #00ffff;
+      margin-bottom: 20px;
+    }
+
+    .question {
+      font-size: 20px;
+      margin-bottom: 20px;
+      min-height: 60px;
+    }
+
+    .options {
+      display: grid;
+      gap: 12px;
+    }
+
+    .option {
+      background: rgba(255,255,255,0.1);
+      padding: 12px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .option:hover {
+      background: rgba(0,255,255,0.3);
+    }
+
+    .option.correct {
+      background: #00ff99;
+      color: #111;
+      font-weight: bold;
+    }
+
+    .option.wrong {
+      background: #ff4d4d;
+    }
+
+    .footer {
+      margin-top: 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .timer {
+      font-size: 18px;
+      font-weight: 600;
+      color: #00ffff;
+    }
+
+    .next-btn {
+      background: #00ffff;
+      color: #111;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .next-btn:hover {
+      background: #00c2c2;
+    }
+
+    .result-box {
+      display: none;
+      text-align: center;
+      color: white;
+    }
+
+    .result-box h2 {
+      color: #00ff99;
+      margin-bottom: 10px;
+    }
+
+    .xp {
+      font-size: 22px;
+      color: #00ffff;
+      margin: 8px 0;
+    }
+
+    .retry-btn {
+      background: #ff6666;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-weight: 600;
+      color: white;
+      cursor: pointer;
+    }
+
+    .retry-btn:hover {
+      background: #ff3333;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container" id="quizBox">
+    <h1>🔥 Challenge Mode</h1>
+    <div class="timer" id="timer">Time: 60s</div>
+    <div class="question" id="question">Loading...</div>
+    <div class="options" id="options"></div>
+
+    <div class="footer">
+      <div id="progress"></div>
+      <button class="next-btn" id="nextBtn" disabled>Next</button>
+    </div>
+  </div>
+
+  <div class="result-box" id="resultBox">
+    <h2>🏆 Challenge Complete!</h2>
+    <p>You answered <span id="scoreCount"></span> questions correctly.</p>
+    <p class="xp">🎯 XP Earned: <span id="xpPoints"></span></p>
+    <button class="retry-btn" onclick="startChallenge()">Retry Challenge</button>
+  </div>
+
+  <script>
+    const questions = [
+      {
+        q: "Which HTML tag is used to create a hyperlink?",
+        options: ["<a>", "<link>", "<href>", "<url>"],
+        correct: 0
+      },
+      {
+        q: "Which CSS property controls text size?",
+        options: ["font-size", "text-style", "font-weight", "text-size"],
+        correct: 0
+      },
+      {
+        q: "Inside which HTML element do we put JavaScript?",
+        options: ["<js>", "<scripting>", "<script>", "<code>"],
+        correct: 2
+      },
+      {
+        q: "Which company developed JavaScript?",
+        options: ["Google", "Netscape", "Microsoft", "IBM"],
+        correct: 1
+      },
+      {
+        q: "Which symbol is used for comments in JS?",
+        options: ["//", "/*", "#", "<!-- -->"],
+        correct: 0
+      }
+    ];
+
+    let currentIndex = 0;
+    let score = 0;
+    let timer = 60;
+    let interval;
+
+    const questionEl = document.getElementById("question");
+    const optionsEl = document.getElementById("options");
+    const nextBtn = document.getElementById("nextBtn");
+    const timerEl = document.getElementById("timer");
+    const progressEl = document.getElementById("progress");
+    const quizBox = document.getElementById("quizBox");
+    const resultBox = document.getElementById("resultBox");
+
+    function startChallenge() {
+      currentIndex = 0;
+      score = 0;
+      timer = 60;
+      quizBox.style.display = "block";
+      resultBox.style.display = "none";
+      nextBtn.disabled = true;
+      loadQuestion();
+      startTimer();
+    }
+
+    function startTimer() {
+      clearInterval(interval);
+      interval = setInterval(() => {
+        timer--;
+        timerEl.innerText = `Time: ${timer}s`;
+        if (timer <= 0) {
+          clearInterval(interval);
+          showResult();
+        }
+      }, 1000);
+    }
+
+    function loadQuestion() {
+      nextBtn.disabled = true;
+      const q = questions[currentIndex];
+      questionEl.innerText = q.q;
+      progressEl.innerText = `Question ${currentIndex + 1} of ${questions.length}`;
+      optionsEl.innerHTML = "";
+
+      q.options.forEach((opt, i) => {
+        const btn = document.createElement("div");
+        btn.classList.add("option");
+        btn.innerText = opt;
+        btn.onclick = () => checkAnswer(i, btn);
+        optionsEl.appendChild(btn);
+      });
+    }
+
+    function checkAnswer(selected, btn) {
+      const q = questions[currentIndex];
+      const allBtns = document.querySelectorAll(".option");
+
+      allBtns.forEach(b => b.style.pointerEvents = "none");
+
+      if (selected === q.correct) {
+        btn.classList.add("correct");
+        score++;
+      } else {
+        btn.classList.add("wrong");
+        allBtns[q.correct].classList.add("correct");
+      }
+
+      nextBtn.disabled = false;
+    }
+
+    nextBtn.addEventListener("click", () => {
+      currentIndex++;
+      if (currentIndex < questions.length) {
+        loadQuestion();
+      } else {
+        showResult();
+      }
+    });
+
+    function showResult() {
+      clearInterval(interval);
+      quizBox.style.display = "none";
+      resultBox.style.display = "block";
+      document.getElementById("scoreCount").innerText = `${score}/${questions.length}`;
+      const xp = score * 50 + Math.max(0, timer) * 2; // XP based on performance
+      document.getElementById("xpPoints").innerText = xp;
+    }
+
+    // Start automatically
+    startChallenge();
+  </script>
+
+</body>
+</html>

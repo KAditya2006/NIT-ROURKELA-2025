@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Video Learning | InternLearn</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: "Poppins", sans-serif;
+      background: #f4f6f9;
+    }
+
+    header {
+      background: #4b6cb7;
+      background: linear-gradient(to right, #182848, #4b6cb7);
+      color: white;
+      padding: 15px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header h1 {
+      font-size: 22px;
+    }
+
+    header button {
+      background: white;
+      color: #4b6cb7;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .content {
+      display: flex;
+      justify-content: space-between;
+      padding: 30px 60px;
+    }
+
+    .video-section {
+      flex: 3;
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    video {
+      width: 100%;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+
+    .question-section {
+      flex: 2;
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      margin-left: 30px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      color: #333;
+    }
+
+    .question {
+      margin-top: 20px;
+    }
+
+    .option {
+      background: #eef2f3;
+      margin: 8px 0;
+      padding: 10px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .option:hover {
+      background: #dce2ff;
+    }
+
+    .correct {
+      background: #c8f7c5 !important;
+    }
+
+    .wrong {
+      background: #f7c5c5 !important;
+    }
+
+    .reward-section {
+      margin-top: 25px;
+      text-align: center;
+    }
+
+    .reward-section button {
+      background: #4b6cb7;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>📘 Learn: HTML Basics</h1>
+    <button onclick="window.location.href='learning-dashboard.html'">⬅ Back</button>
+  </header>
+
+  <div class="content">
+    <!-- Left: Video Section -->
+    <div class="video-section">
+      <video id="courseVideo" controls>
+        <source src="sample-video.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+
+      <p><strong>Description:</strong> In this video, you’ll learn HTML basics — tags, structure, and attributes.</p>
+    </div>
+
+    <!-- Right: Question Section -->
+    <div class="question-section">
+      <h2>Quick Quiz 🧠</h2>
+
+      <div class="question">
+        <p><strong>1. What does HTML stand for?</strong></p>
+        <div class="option" onclick="checkAnswer(this, true)">Hyper Text Markup Language</div>
+        <div class="option" onclick="checkAnswer(this, false)">High Tool Markup Language</div>
+        <div class="option" onclick="checkAnswer(this, false)">Hyperlink Mark Language</div>
+      </div>
+
+      <div class="reward-section">
+        <button id="nextButton" onclick="nextLesson()" disabled>Next Lesson ➡</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function checkAnswer(element, isCorrect) {
+      const options = document.querySelectorAll('.option');
+      options.forEach(opt => opt.style.pointerEvents = 'none'); // disable clicks
+
+      if (isCorrect) {
+        element.classList.add('correct');
+        document.getElementById("nextButton").disabled = false;
+        alert("🎉 Correct! Well done.");
+      } else {
+        element.classList.add('wrong');
+        alert("❌ Wrong answer. Please rewatch the video.");
+        document.getElementById("courseVideo").currentTime = 0; // rewind
+        document.getElementById("courseVideo").play();
+      }
+    }
+
+    function nextLesson() {
+      alert("✅ Topic Completed! You earned +10 points.");
+      window.location.href = "learning-dashboard.html";
+    }
+  </script>
+
+</body>
+</html>

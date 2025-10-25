@@ -1,0 +1,196 @@
+<!-- save as verify-firebase.html -->
+<!doctype html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width,initial-scale=1" />
+	<title>Verify Certificate — InternLearn</title>
+	<style>
+		body {
+			font-family: Inter, system-ui, Arial;
+			background: linear-gradient(135deg, #1f3a93, #1aa3b8);
+			color: #fff;
+			min-height: 100vh;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			margin: 0;
+			padding: 20px
+		}
+
+		.card {
+			background: rgba(255, 255, 255, 0.06);
+			padding: 28px;
+			border-radius: 12px;
+			max-width: 720px;
+			width: 100%;
+			box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+			backdrop-filter: blur(6px)
+		}
+
+		h1 {
+			margin: 0 0 10px;
+			font-size: 20px
+		}
+
+		.id-box {
+			display: inline-block;
+			padding: 8px 12px;
+			background: rgba(255, 255, 255, 0.08);
+			border-radius: 8px;
+			margin: 10px 0;
+			font-weight: 600
+		}
+
+		.valid {
+			color: #00ffb3;
+			font-weight: 700;
+			font-size: 18px;
+			margin: 10px 0
+		}
+
+		.invalid {
+			color: #ff8080;
+			font-weight: 700;
+			font-size: 18px;
+			margin: 10px 0
+		}
+
+		.details {
+			background: rgba(0, 0, 0, 0.18);
+			padding: 14px;
+			border-radius: 10px;
+			margin-top: 16px;
+			color: #e8f7f7
+		}
+
+		.btn {
+			margin-top: 18px;
+			padding: 10px 14px;
+			border-radius: 8px;
+			border: 0;
+			cursor: pointer;
+			font-weight: 700
+		}
+
+		.btn-home {
+			background: #ffffff;
+			color: #0b3240
+		}
+
+		.spinner {
+			width: 32px;
+			height: 32px;
+			border: 4px solid rgba(255, 255, 255, 0.15);
+			border-top-color: #fff;
+			border-radius: 50%;
+			animation: spin 1s linear infinite;
+			display: inline-block;
+			vertical-align: middle
+		}
+
+		@keyframes spin {
+			to {
+				transform: rotate(360deg)
+			}
+		}
+	</style>
+</head>
+
+<body>
+
+	<div class="card" id="box">
+		<h1>🔎 Certificate Verification</h1>
+		<div id="status">Checking certificate... <span class="spinner" id="sp"></span></div>
+		<div id="content" style="display:none">
+			<!-- dynamic content -->
+		</div>
+	</div>
+
+	<!-- Firebase (compat for simple code) -->
+	<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+	<script>
+		// ====== REPLACE with your Firebase config ======
+		const firebaseConfig = {
+			apiKey: "REPLACE_API_KEY",
+			authDomain: "REPLACE_PROJECT.firebaseapp.com",
+			projectId: "REPLACE_PROJECT",
+			// storageBucket, messagingSenderId, appId (optional)
+		};
+		// ===============================================
+
+		// init
+		firebase.initializeApp(firebaseConfig);
+		const db = firebase.firestore();
+
+		// helper: get ?cert=...
+		function getCertParam() {
+			const params = new URLSearchParams(window.location.search);
+			return params.get('cert');
+		}
+
+		async function verify() {
+			const id = getCertParam();
+			const statusEl = document.getElementById('status');
+			const contentEl = document.getElementById('content');
+			const spinner = document.getElementById('sp');
+
+			if (!id) {
+				spinner.style.display = 'none';
+				statusEl.innerHTML = '<div class="invalid">⚠️ No certificate id provided in URL.</div>';
+				statusEl.innerHTML += '<div style="margin-top:8px;color:#fff;opacity:.9">Use link like: verify.html?cert=INTL-ABC123</div>';
+				return;
+			}
+
+			try {
+				// read document from collection `certificates` with doc id = id
+				const docRef = db.collection('certificates').doc(id);
+				const doc = await docRef.get();
+
+				spinner.style.display = 'none';
+				if (doc.exists) {
+					const data = doc.data();
+
+					// optional: you can check `verified` boolean or other conditions
+					const isVerified = (data.verified === undefined) ? true : !!data.verified;
+
+					const html = [];
+					html.push(`<div class="${isVerified ? 'valid' : 'invalid'}">${isVerified ? '✅ Certificate Verified' : '⚠️ Certificate Found (Not Verified)'}</div>`);
+					html.push(`<div class="id-box">Certificate ID: <strong>${id}</strong></div>`);
+					html.push('<div class="details">');
+					html.push(`<p><strong>Name:</strong> ${escapeHtml(data.name || '—')}</p>`);
+					html.push(`<p><strong>Course:</strong> ${escapeHtml(data.course || '—')}</p>`);
+					// date: support timestamp or string
+					const d = data.date ? (data.date.toDate ? data.date.toDate().toLocaleDateString() : data.date) : (data.issuedAt ? data.issuedAt.toDate().toLocaleDateString() : '—');
+					html.push(`<p><strong>Issued:</strong> ${escapeHtml(d)}</p>`);
+					if (data.meta && data.meta.issuer) html.push(`<p><strong>Issuer:</strong> ${escapeHtml(data.meta.issuer)}</p>`);
+					html.push('</div>');
+					html.push(`<div style="text-align:right"><button class="btn btn-home" onclick="window.location.href='index.html'">🏠 Home</button></div>`);
+
+					contentEl.innerHTML = html.join('');
+					contentEl.style.display = 'block';
+					statusEl.style.display = 'none';
+				} else {
+					statusEl.innerHTML = `<div class="invalid">❌ Certificate not found in our records.</div><div style="margin-top:8px">If you think this is an error, contact issuer.</div><div style="margin-top:16px"><button class="btn btn-home" onclick="window.location.href='index.html'">🏠 Home</button></div>`;
+				}
+			} catch (err) {
+				spinner.style.display = 'none';
+				statusEl.innerHTML = `<div class="invalid">⚠️ Error checking certificate. See console for details.</div>`;
+				console.error('verify error', err);
+			}
+		}
+
+		// very small sanitizer
+		function escapeHtml(str) {
+			if (!str) return '';
+			return String(str).replace(/[&<>"']/g, function (m) { return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[m]; });
+		}
+
+		verify();
+	</script>
+</body>
+
+</html>

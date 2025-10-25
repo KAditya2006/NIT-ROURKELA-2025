@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Transaction History | InternLearn</title>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+    body {
+      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+      font-family: 'Poppins', sans-serif;
+      color: white;
+      min-height: 100vh;
+      padding: 40px 20px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #00ffff;
+      margin-bottom: 30px;
+      font-size: 2em;
+      letter-spacing: 1px;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      display: grid;
+      gap: 20px;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+      transition: all 0.3s ease;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 30px rgba(0, 255, 255, 0.3);
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(0,255,255,0.1), transparent 70%);
+      transform: rotate(45deg);
+      transition: 0.6s;
+      opacity: 0;
+    }
+
+    .card:hover::before {
+      opacity: 1;
+    }
+
+    .top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .amount {
+      font-size: 1.5em;
+      font-weight: 600;
+      color: #00ffff;
+    }
+
+    .status {
+      padding: 6px 14px;
+      border-radius: 12px;
+      font-size: 0.9em;
+      text-transform: capitalize;
+      font-weight: 500;
+    }
+
+    .status.pending {
+      background: rgba(255, 193, 7, 0.2);
+      color: #ffc107;
+    }
+
+    .status.approved {
+      background: rgba(0, 255, 127, 0.2);
+      color: #00ff7f;
+    }
+
+    .status.rejected {
+      background: rgba(255, 69, 58, 0.2);
+      color: #ff4545;
+    }
+
+    .details {
+      font-size: 0.9em;
+      color: #ddd;
+    }
+
+    .txn {
+      margin-top: 8px;
+      font-size: 0.85em;
+      color: #aaa;
+      font-family: monospace;
+    }
+
+    .back-btn {
+      display: inline-block;
+      margin: 20px auto;
+      background: #00ffff;
+      color: #111;
+      padding: 10px 20px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: 0.3s;
+      text-align: center;
+    }
+
+    .back-btn:hover {
+      background: #00c2c2;
+    }
+
+  </style>
+</head>
+<body>
+
+  <h1>💳 Transaction History</h1>
+  <div class="container" id="history"></div>
+  <a href="earning-dashboard.html" class="back-btn">⬅ Back to Earning Dashboard</a>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
+    import { getFirestore, collection, getDocs } 
+      from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
+
+    // 🔥 Firebase Config
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_PROJECT.firebaseapp.com",
+      projectId: "YOUR_PROJECT_ID",
+      storageBucket: "YOUR_PROJECT.appspot.com",
+      messagingSenderId: "YOUR_MSG_ID",
+      appId: "YOUR_APP_ID"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const userEmail = localStorage.getItem("userEmail") || "guest@example.com";
+
+    async function loadHistory() {
+      const historyDiv = document.getElementById("history");
+      const querySnapshot = await getDocs(collection(db, "withdrawRequests"));
+      let found = false;
+
+      querySnapshot.forEach((docSnap) => {
+        const data = docSnap.data();
+        if (data.email === userEmail) {
+          found = true;
+          const statusClass = data.status.toLowerCase();
+          historyDiv.innerHTML += `
+            <div class="card">
+              <div class="top">
+                <div class="amount">₹${data.amount}</div>
+                <div class="status ${statusClass}">${data.status}</div>
+              </div>
+              <div class="details">
+                Method: ${data.method.toUpperCase()}<br>
+                Account: ${data.upi}<br>
+                Requested: ${data.date || "N/A"}<br>
+                ${data.paidAt ? `Paid: ${data.paidAt}` : ""}
+              </div>
+              ${data.txnId ? `<div class="txn">TXN ID: ${data.txnId}</div>` : ""}
+            </div>
+          `;
+        }
+      });
+
+      if (!found) {
+        historyDiv.innerHTML = `<p style="text-align:center;color:#ccc;">No transactions yet 🚀</p>`;
+      }
+    }
+
+    loadHistory();
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Final Quiz | InternLearn</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: "Poppins", sans-serif;
+      background: #eef2f3;
+    }
+
+    header {
+      background: linear-gradient(to right, #4b6cb7, #182848);
+      color: white;
+      padding: 15px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header h1 {
+      font-size: 22px;
+    }
+
+    header button {
+      background: white;
+      color: #182848;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .quiz-container {
+      max-width: 800px;
+      margin: 50px auto;
+      background: white;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .progress-bar {
+      height: 8px;
+      background: #ddd;
+      border-radius: 4px;
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+
+    .progress {
+      height: 8px;
+      background: #4b6cb7;
+      width: 0%;
+      transition: width 0.3s;
+    }
+
+    .question-box h2 {
+      color: #333;
+      margin-bottom: 20px;
+    }
+
+    .option {
+      background: #f5f7fa;
+      margin: 10px 0;
+      padding: 12px 16px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .option:hover {
+      background: #dce2ff;
+    }
+
+    .option.correct { background: #baf5ba !important; }
+    .option.wrong { background: #f5baba !important; }
+
+    .quiz-footer {
+      margin-top: 30px;
+      text-align: right;
+    }
+
+    .quiz-footer button {
+      background: #4b6cb7;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .result-box {
+      text-align: center;
+      display: none;
+    }
+
+    .result-box h2 {
+      color: #182848;
+    }
+
+    .result-box button {
+      margin: 10px;
+      background: #182848;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>📚 Final Quiz — HTML Basics</h1>
+    <button onclick="window.location.href='learning-dashboard.html'">⬅ Dashboard</button>
+  </header>
+
+  <div class="quiz-container">
+    <div class="progress-bar"><div class="progress" id="progress"></div></div>
+
+    <div class="question-box" id="questionBox">
+      <!-- Questions appear dynamically -->
+    </div>
+
+    <div class="quiz-footer">
+      <button id="nextBtn" onclick="nextQuestion()" disabled>Next ➡</button>
+    </div>
+
+    <div class="result-box" id="resultBox">
+      <h2>🎉 Quiz Completed!</h2>
+      <p id="scoreText"></p>
+      <button onclick="retryQuiz()">🔁 Retry</button>
+      <button onclick="window.location.href='reward-page.html'">🏅 View Rewards</button>
+    </div>
+  </div>
+
+  <script>
+    const quizData = [
+      {
+        question: "1️⃣ What does HTML stand for?",
+        options: [
+          "Hyper Text Markup Language",
+          "High Tool Markup Language",
+          "Hyperlink Mark Language"
+        ],
+        correct: 0
+      },
+      {
+        question: "2️⃣ Which tag is used for the largest heading?",
+        options: ["<heading>", "<h1>", "<h6>"],
+        correct: 1
+      },
+      {
+        question: "3️⃣ What is the correct HTML for inserting a line break?",
+        options: ["<break>", "<lb>", "<br>"],
+        correct: 2
+      }
+    ];
+
+    let current = 0;
+    let score = 0;
+
+    const questionBox = document.getElementById("questionBox");
+    const progress = document.getElementById("progress");
+    const nextBtn = document.getElementById("nextBtn");
+    const resultBox = document.getElementById("resultBox");
+    const scoreText = document.getElementById("scoreText");
+
+    function loadQuestion() {
+      const q = quizData[current];
+      progress.style.width = `${((current) / quizData.length) * 100}%`;
+      questionBox.innerHTML = `
+        <h2>${q.question}</h2>
+        ${q.options.map((opt, i) => `
+          <div class="option" onclick="checkAnswer(this, ${i === q.correct})">${opt}</div>
+        `).join('')}
+      `;
+    }
+
+    function checkAnswer(element, correct) {
+      const options = document.querySelectorAll(".option");
+      options.forEach(o => o.style.pointerEvents = "none");
+
+      if (correct) {
+        element.classList.add("correct");
+        score++;
+      } else {
+        element.classList.add("wrong");
+      }
+
+      nextBtn.disabled = false;
+    }
+
+    function nextQuestion() {
+      nextBtn.disabled = true;
+      current++;
+
+      if (current < quizData.length) {
+        loadQuestion();
+      } else {
+        showResult();
+      }
+    }
+
+    function showResult() {
+      progress.style.width = "100%";
+      questionBox.style.display = "none";
+      nextBtn.style.display = "none";
+      resultBox.style.display = "block";
+      scoreText.innerText = `You scored ${score} / ${quizData.length}`;
+    }
+
+    function retryQuiz() {
+      current = 0;
+      score = 0;
+      resultBox.style.display = "none";
+      questionBox.style.display = "block";
+      nextBtn.style.display = "inline-block";
+      loadQuestion();
+    }
+
+    loadQuestion();
+  </script>
+
+</body>
+</html>

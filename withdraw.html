@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Withdraw | InternLearn</title>
+  <style>
+    body {
+      background: linear-gradient(135deg, #1a1a2e, #16213e);
+      color: white;
+      font-family: "Poppins", sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      padding: 20px;
+    }
+
+    .box {
+      background: rgba(255,255,255,0.08);
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+    }
+
+    h1 {
+      color: #00ffff;
+      margin-bottom: 20px;
+    }
+
+    input, button, select {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      font-size: 16px;
+    }
+
+    input {
+      background: rgba(255,255,255,0.1);
+      color: white;
+    }
+
+    button {
+      background: #00ffff;
+      color: #111;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #00c2c2;
+    }
+
+    .status {
+      margin-top: 20px;
+      text-align: left;
+    }
+
+    .status-item {
+      background: rgba(255,255,255,0.05);
+      padding: 8px;
+      border-radius: 8px;
+      margin-bottom: 8px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="box">
+    <h1>💸 Withdraw Coins</h1>
+
+    <input type="number" id="amount" placeholder="Enter amount (₹)" min="50" />
+    <select id="method">
+      <option value="upi">UPI</option>
+      <option value="paytm">Paytm</option>
+    </select>
+    <input type="text" id="upi" placeholder="Enter UPI ID or Paytm number" />
+    <button id="withdrawBtn">Request Withdraw</button>
+
+    <div class="status">
+      <h3>📜 Withdraw Requests:</h3>
+      <div id="requestList"></div>
+    </div>
+  </div>
+
+  <!-- Firebase -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
+    import { getFirestore, collection, addDoc, getDocs, doc, getDoc, updateDoc, query, where } 
+      from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_PROJECT.firebaseapp.com",
+      projectId: "YOUR_PROJECT_ID",
+      storageBucket: "YOUR_PROJECT.appspot.com",
+      messagingSenderId: "YOUR_MSG_ID",
+      appId: "YOUR_APP_ID"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const userEmail = localStorage.getItem("userEmail") || "guest@example.com";
+
+    async function loadRequests() {
+      const reqRef = collection(db, "withdrawRequests");
+      const snapshot = await getDocs(reqRef);
+      const list = document.getElementById("requestList");
+      list.innerHTML = "";
+      snapshot.forEach(docSnap => {
+        const data = docSnap.data();
+        if (data.email === userEmail) {
+          list.innerHTML += `
+            <div class="status-item">
+              <b>₹${data.amount}</b> - ${data.status} <br>
+              <small>${data.date}</small>
+            </div>`;
+        }
+      });
+    }
+
+    document.getElementById("withdrawBtn").addEventListener("click", async () => {
+      const amount = parseFloat(document.getElementById("amount").value);
+      const upi = document.getElementById("upi").value;
+
+      if (!amount || amount < 50) return alert("Minimum withdraw ₹50 allowed!");
+      if (!upi) return alert("Please enter UPI ID / Paytm number.");
+
+      const userRef = doc(db, "leaderboard", userEmail);
+      const userSnap = await getDoc(userRef);
+      if (!userSnap.exists()) return alert("No user data found!");
+
+      const userData = userSnap.data();
+      const xp = userData.xp || 0;
+      const requiredXP = amount * 100;
+
+      if (xp < requiredXP) return alert("Not enough XP to withdraw this amount!");
+
+      await addDoc(collection(db, "withdrawRequests"), {
+        email: userEmail,
+        amount: amount,
+        upi: upi,
+        method: document.getElementById("method").value,
+        status: "pending",
+        date: new Date().toLocaleString()
+      });
+
+      alert("✅ Withdraw request sent to admin!");
+      loadRequests();
+    });
+
+    loadRequests();
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>InternVerse | Learning Dashboard</title>
+  <style>
+    /* ===============================
+       RESET + BASE
+    =============================== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      background: #0a192f;
+      color: #fff;
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    /* ===============================
+       SIDEBAR
+    =============================== */
+    .sidebar {
+      width: 250px;
+      background: #112240;
+      padding: 30px 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .sidebar h2 {
+      color: #00e0ff;
+      margin-bottom: 30px;
+      font-size: 1.5rem;
+      text-align: center;
+    }
+
+    .menu {
+      list-style: none;
+    }
+
+    .menu li {
+      margin: 18px 0;
+    }
+
+    .menu li a {
+      display: block;
+      padding: 10px 15px;
+      border-radius: 8px;
+      transition: 0.3s;
+      font-weight: 500;
+    }
+
+    .menu li a:hover,
+    .menu li a.active {
+      background: #00e0ff;
+      color: #0a192f;
+    }
+
+    .logout-btn {
+      background: #ff4757;
+      padding: 10px;
+      text-align: center;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: 0.3s;
+    }
+
+    .logout-btn:hover {
+      background: #ff6b81;
+    }
+
+    /* ===============================
+       MAIN CONTENT
+    =============================== */
+    .main-content {
+      flex: 1;
+      padding: 40px;
+      overflow-y: auto;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 40px;
+    }
+
+    .header h1 {
+      font-size: 2rem;
+      color: #00e0ff;
+    }
+
+    .header .user {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(255,255,255,0.05);
+      padding: 8px 15px;
+      border-radius: 8px;
+    }
+
+    .header .user img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+    }
+
+    /* ===============================
+       COURSE CARDS
+    =============================== */
+    .courses {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 25px;
+    }
+
+    .course-card {
+      background: #112240;
+      padding: 25px;
+      border-radius: 12px;
+      transition: 0.3s;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .course-card:hover {
+      transform: translateY(-5px);
+      border-color: #00e0ff;
+      box-shadow: 0 0 15px rgba(0,224,255,0.15);
+    }
+
+    .course-card h3 {
+      color: #00e0ff;
+      margin-bottom: 10px;
+    }
+
+    .course-card p {
+      font-size: 0.9rem;
+      color: #ccc;
+      margin-bottom: 15px;
+    }
+
+    .progress-bar {
+      background: rgba(255,255,255,0.1);
+      height: 8px;
+      border-radius: 5px;
+      overflow: hidden;
+      margin-bottom: 10px;
+    }
+
+    .progress-fill {
+      height: 8px;
+      background: #00e0ff;
+      width: 60%;
+      transition: width 0.3s;
+    }
+
+    .course-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .course-footer span {
+      font-size: 0.8rem;
+      color: #aaa;
+    }
+
+    .start-btn {
+      background: #00e0ff;
+      color: #0a192f;
+      padding: 8px 14px;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .start-btn:hover {
+      background: transparent;
+      color: #00e0ff;
+      border: 1px solid #00e0ff;
+    }
+
+    /* ===============================
+       SCROLLBAR
+    =============================== */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #00e0ff;
+      border-radius: 10px;
+    }
+
+    /* ===============================
+       RESPONSIVE
+    =============================== */
+    @media (max-width: 850px) {
+      .sidebar {
+        display: none;
+      }
+      .main-content {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===============================
+       SIDEBAR
+  =============================== -->
+  <div class="sidebar">
+    <div>
+      <h2>InternVerse</h2>
+      <ul class="menu">
+        <li><a href="#" class="active">📚 My Courses</a></li>
+        <li><a href="#">🏆 Leaderboard</a></li>
+        <li><a href="#">⚙️ Challenge Mode</a></li>
+        <li><a href="#">🎓 Certificates</a></li>
+        <li><a href="#">🎮 Rewards</a></li>
+      </ul>
+    </div>
+    <div class="logout-btn" onclick="logout()">Logout</div>
+  </div>
+
+  <!-- ===============================
+       MAIN CONTENT
+  =============================== -->
+  <div class="main-content">
+    <div class="header">
+      <h1>Welcome back, Aditya 👋</h1>
+      <div class="user">
+        <img src="https://cdn-icons-png.flaticon.com/512/847/847969.png" alt="User">
+        <span>Student</span>
+      </div>
+    </div>
+
+    <h2 style="margin-bottom:20px;">Your Active Courses</h2>
+
+    <div class="courses">
+      <div class="course-card">
+        <h3>Web Development</h3>
+        <p>Learn HTML, CSS, JS, and build your own portfolio website.</p>
+        <div class="progress-bar"><div class="progress-fill" style="width:70%;"></div></div>
+        <div class="course-footer">
+          <span>70% Complete</span>
+          <button class="start-btn" onclick="startCourse('webdev')">Continue</button>
+        </div>
+      </div>
+
+      <div class="course-card">
+        <h3>Python Programming</h3>
+        <p>Start coding with Python and solve real-world problems.</p>
+        <div class="progress-bar"><div class="progress-fill" style="width:45%;"></div></div>
+        <div class="course-footer">
+          <span>45% Complete</span>
+          <button class="start-btn" onclick="startCourse('python')">Continue</button>
+        </div>
+      </div>
+
+      <div class="course-card">
+        <h3>Data Science Basics</h3>
+        <p>Understand data visualization, pandas, and machine learning fundamentals.</p>
+        <div class="progress-bar"><div class="progress-fill" style="width:25%;"></div></div>
+        <div class="course-footer">
+          <span>25% Complete</span>
+          <button class="start-btn" onclick="startCourse('datascience')">Continue</button>
+        </div>
+      </div>
+
+      <div class="course-card">
+        <h3>UI/UX Design</h3>
+        <p>Learn how to design beautiful, user-friendly interfaces.</p>
+        <div class="progress-bar"><div class="progress-fill" style="width:90%;"></div></div>
+        <div class="course-footer">
+          <span>90% Complete</span>
+          <button class="start-btn" onclick="startCourse('uiux')">Continue</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===============================
+       JAVASCRIPT
+  =============================== -->
+  <script>
+    function startCourse(course) {
+      alert("Opening " + course + " course...");
+      // Example navigation
+      window.location.href = "course-" + course + ".html";
+    }
+
+    function logout() {
+      const confirmLogout = confirm("Are you sure you want to logout?");
+      if (confirmLogout) {
+        window.location.href = "index.html";
+      }
+    }
+  </script>
+
+</body>
+</html>

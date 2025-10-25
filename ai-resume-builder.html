@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>AI Resume Builder | InternLearn</title>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+      color: white;
+      font-family: 'Poppins', sans-serif;
+      padding: 40px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    h1 {
+      color: #00ffff;
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 2em;
+    }
+
+    .builder-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 30px;
+      justify-content: center;
+      width: 100%;
+      max-width: 1200px;
+    }
+
+    .form-box, .preview-box {
+      flex: 1 1 400px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 16px;
+      padding: 25px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 8px;
+      margin-bottom: 12px;
+      font-size: 14px;
+      background: rgba(255,255,255,0.1);
+      color: white;
+    }
+
+    button {
+      background: #00ffff;
+      border: none;
+      color: #111;
+      font-weight: 600;
+      padding: 10px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background: #00c2c2;
+    }
+
+    .preview {
+      background: white;
+      color: black;
+      border-radius: 12px;
+      padding: 25px;
+      height: 100%;
+    }
+
+    .preview h2 {
+      color: #222;
+      margin-bottom: 5px;
+    }
+
+    .preview h3 {
+      margin-top: 15px;
+      color: #444;
+    }
+
+    .preview p {
+      margin: 5px 0;
+      line-height: 1.4em;
+    }
+
+    .resume-header {
+      border-bottom: 2px solid #00ffff;
+      padding-bottom: 8px;
+      margin-bottom: 15px;
+    }
+
+    .ai-text {
+      color: #00ffff;
+      font-weight: 600;
+      font-size: 0.9em;
+    }
+
+  </style>
+</head>
+<body>
+
+  <h1>🤖 AI Resume Builder</h1>
+
+  <div class="builder-container">
+    <!-- Form -->
+    <div class="form-box">
+      <h2>Enter Your Details</h2>
+      <input id="name" type="text" placeholder="Full Name" />
+      <input id="email" type="email" placeholder="Email" />
+      <input id="phone" type="text" placeholder="Phone Number" />
+      <textarea id="education" rows="3" placeholder="Education Details"></textarea>
+      <textarea id="skills" rows="3" placeholder="Skills (comma separated)"></textarea>
+      <textarea id="experience" rows="3" placeholder="Internships / Experience"></textarea>
+      <textarea id="achievements" rows="3" placeholder="Achievements"></textarea>
+      <button id="generate">✨ Generate Resume</button>
+      <button id="download">📄 Download PDF</button>
+    </div>
+
+    <!-- Preview -->
+    <div class="preview-box">
+      <div class="preview" id="resumePreview">
+        <div class="resume-header">
+          <h2 id="resName">Your Name</h2>
+          <p id="resContact">email@example.com | +91 XXXXX XXXXX</p>
+        </div>
+        <p id="resSummary" class="ai-text">AI-generated summary will appear here...</p>
+        <h3>🎓 Education</h3>
+        <p id="resEducation">Your education details...</p>
+        <h3>💼 Experience</h3>
+        <p id="resExperience">Your internships or experience...</p>
+        <h3>🛠 Skills</h3>
+        <p id="resSkills">Your skills...</p>
+        <h3>🏆 Achievements</h3>
+        <p id="resAchievements">Your achievements...</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- jsPDF library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+  <script>
+    const genBtn = document.getElementById("generate");
+    const downloadBtn = document.getElementById("download");
+
+    genBtn.addEventListener("click", async () => {
+      const name = document.getElementById("name").value || "Student Name";
+      const email = document.getElementById("email").value || "example@gmail.com";
+      const phone = document.getElementById("phone").value || "9999999999";
+      const education = document.getElementById("education").value || "";
+      const skills = document.getElementById("skills").value || "";
+      const experience = document.getElementById("experience").value || "";
+      const achievements = document.getElementById("achievements").value || "";
+
+      // Simple AI Summary (can connect to OpenAI API later)
+      const aiSummary = `A passionate learner and aspiring professional with strengths in ${skills.split(",")[0] || "multiple domains"}. Dedicated to continuous learning, with experience in ${experience.split(",")[0] || "various internships"} and a solid academic foundation.`;
+
+      // Update Preview
+      document.getElementById("resName").textContent = name;
+      document.getElementById("resContact").textContent = `${email} | ${phone}`;
+      document.getElementById("resSummary").textContent = aiSummary;
+      document.getElementById("resEducation").textContent = education;
+      document.getElementById("resSkills").textContent = skills;
+      document.getElementById("resExperience").textContent = experience;
+      document.getElementById("resAchievements").textContent = achievements;
+    });
+
+    // PDF Download
+    downloadBtn.addEventListener("click", () => {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+      doc.html(document.getElementById("resumePreview"), {
+        callback: function (pdf) {
+          pdf.save("AI_Resume.pdf");
+        },
+        x: 10,
+        y: 10,
+        width: 180
+      });
+    });
+  </script>
+
+</body>
+</html>
