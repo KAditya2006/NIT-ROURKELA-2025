@@ -1,0 +1,220 @@
+/* ===============================
+       RESET + BASE STYLES
+    =============================== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      background: linear-gradient(120deg, #001f3f, #002b55, #003366);
+      color: white;
+      overflow-x: hidden;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* ===============================
+       NAVBAR
+    =============================== */
+    header {
+      width: 100%;
+      padding: 20px 80px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 1000;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    }
+
+    header h1 {
+      font-size: 1.8rem;
+      letter-spacing: 1px;
+      color: #00e0ff;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 30px;
+    }
+
+    nav ul li a {
+      color: #fff;
+      font-weight: 500;
+      transition: 0.3s;
+    }
+
+    nav ul li a:hover {
+      color: #00e0ff;
+    }
+
+    /* ===============================
+       HERO SECTION
+    =============================== */
+    .hero {
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 80px;
+      background: linear-gradient(120deg, #001f3f, #003366);
+    }
+
+    .hero-content {
+      max-width: 550px;
+      animation: fadeInLeft 1.2s ease;
+    }
+
+    .hero-content h2 {
+      font-size: 2.5rem;
+      margin-bottom: 15px;
+      color: #00e0ff;
+    }
+
+    .hero-content p {
+      font-size: 1.1rem;
+      line-height: 1.6;
+      color: #e0e0e0;
+      margin-bottom: 25px;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 20px;
+    }
+
+    .btn {
+      padding: 12px 28px;
+      border-radius: 30px;
+      border: 2px solid #00e0ff;
+      font-weight: 600;
+      transition: 0.3s ease;
+      cursor: pointer;
+    }
+
+    .btn.primary {
+      background: #00e0ff;
+      color: #001f3f;
+    }
+
+    .btn.primary:hover {
+      background: transparent;
+      color: #00e0ff;
+    }
+
+    .btn.secondary:hover {
+      background: #00e0ff;
+      color: #001f3f;
+    }
+
+    .hero-image {
+      width: 45%;
+      animation: fadeInRight 1.2s ease;
+    }
+
+    .hero-image img {
+      width: 100%;
+      border-radius: 20px;
+      box-shadow: 0 0 20px rgba(0,224,255,0.5);
+    }
+
+    /* ===============================
+       INFO SECTION
+    =============================== */
+    .info-section {
+      padding: 100px 80px;
+      background: #00264d;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 60px;
+      align-items: center;
+    }
+
+    .info-card {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      padding: 40px;
+      border-radius: 20px;
+      transition: 0.4s;
+    }
+
+    .info-card:hover {
+      transform: translateY(-8px);
+      border-color: #00e0ff;
+      box-shadow: 0 0 15px rgba(0,224,255,0.2);
+    }
+
+    .info-card h3 {
+      color: #00e0ff;
+      margin-bottom: 15px;
+    }
+
+    .info-card p {
+      color: #ccc;
+      line-height: 1.6;
+    }
+
+    /* ===============================
+       FOOTER
+    =============================== */
+    footer {
+      text-align: center;
+      padding: 30px;
+      background: #001a33;
+      color: #aaa;
+      font-size: 0.9rem;
+    }
+
+    /* ===============================
+       ANIMATIONS
+    =============================== */
+    @keyframes fadeInLeft {
+      from {
+        opacity: 0;
+        transform: translateX(-40px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes fadeInRight {
+      from {
+        opacity: 0;
+        transform: translateX(40px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .hero {
+        flex-direction: column;
+        text-align: center;
+        padding-top: 120px;
+      }
+
+      .hero-image {
+        width: 80%;
+        margin-top: 40px;
+      }
+
+      .info-section {
+        grid-template-columns: 1fr;
+      }
+    }
