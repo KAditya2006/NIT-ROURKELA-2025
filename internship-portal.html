@@ -1,0 +1,378 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Internship & Job Portal</title>
+<style>
+  :root {
+    --bg:#0f1724;
+    --card:#101b2d;
+    --accent:#00e0ff;
+  }
+  body {
+    font-family: "Poppins", sans-serif;
+    background: var(--bg);
+    color: #e6f6ff;
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  header {
+    background: linear-gradient(90deg, #00e0ff22, #00e0ff11);
+    padding: 16px 24px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  header h1 {
+    font-size: 20px;
+    color: var(--accent);
+    margin: 0;
+  }
+  header input {
+    padding: 8px 14px;
+    border-radius: 8px;
+    border: none;
+    outline: none;
+    background: rgba(255,255,255,0.1);
+    color: #fff;
+    width: 240px;
+  }
+
+  main {
+    display: flex;
+    flex: 1;
+    padding: 20px;
+    gap: 20px;
+  }
+
+  aside {
+    width: 240px;
+    background: var(--card);
+    border-radius: 10px;
+    padding: 16px;
+    height: fit-content;
+  }
+
+  aside h3 {
+    font-size: 16px;
+    margin-bottom: 10px;
+    color: var(--accent);
+  }
+
+  aside label {
+    font-size: 13px;
+    color: #a8c1ce;
+  }
+
+  aside select, aside input {
+    width: 100%;
+    margin: 6px 0 12px;
+    padding: 8px;
+    background: rgba(255,255,255,0.1);
+    border: none;
+    border-radius: 6px;
+    color: #fff;
+  }
+
+  .jobs {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 18px;
+  }
+
+  .job-card {
+    background: var(--card);
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+    cursor: pointer;
+    transition: transform 0.2s, background 0.2s;
+  }
+  .job-card:hover {
+    transform: translateY(-3px);
+    background: #13233a;
+  }
+
+  .job-card h2 {
+    font-size: 16px;
+    margin: 0 0 4px 0;
+    color: var(--accent);
+  }
+  .job-card .company {
+    font-size: 14px;
+    color: #9fb6c9;
+    margin-bottom: 8px;
+  }
+  .job-card .meta {
+    font-size: 13px;
+    color: #a8c1ce;
+  }
+
+  /* Popup */
+  .popup {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(6px);
+  }
+  .popup.active { display: flex; }
+
+  .popup-content {
+    background: var(--card);
+    padding: 20px;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 520px;
+    position: relative;
+  }
+
+  .popup-content h2 {
+    color: var(--accent);
+    margin-top: 0;
+  }
+
+  .close-btn {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: transparent;
+    border: none;
+    font-size: 20px;
+    color: #fff;
+    cursor: pointer;
+  }
+
+  .popup-content p {
+    font-size: 14px;
+    color: #cfeff6;
+    line-height: 1.6;
+  }
+
+  .apply-btn {
+    background: var(--accent);
+    color: #002333;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 12px;
+  }
+
+  /* Apply Form */
+  .apply-form {
+    display: none;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 10px;
+  }
+  .apply-form.active { display: flex; }
+
+  .apply-form input, .apply-form textarea {
+    width: 100%;
+    padding: 8px;
+    background: rgba(255,255,255,0.1);
+    border: none;
+    border-radius: 8px;
+    color: #fff;
+  }
+
+  footer {
+    text-align: center;
+    font-size: 13px;
+    color: #a8c1ce;
+    padding: 10px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+  }
+
+  @media (max-width: 768px) {
+    main { flex-direction: column; }
+    aside { width: 100%; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <h1>💼 Internship / Job Portal</h1>
+  <input type="search" id="searchBox" placeholder="Search by role or company..."/>
+</header>
+
+<main>
+  <aside>
+    <h3>Filters</h3>
+    <label>Role</label>
+    <select id="roleFilter">
+      <option value="">All</option>
+      <option>Frontend Developer</option>
+      <option>Backend Developer</option>
+      <option>Designer</option>
+      <option>Data Analyst</option>
+      <option>Marketing</option>
+    </select>
+
+    <label>Location</label>
+    <select id="locationFilter">
+      <option value="">All</option>
+      <option>Remote</option>
+      <option>Delhi</option>
+      <option>Bangalore</option>
+      <option>Mumbai</option>
+    </select>
+
+    <label>Type</label>
+    <select id="typeFilter">
+      <option value="">All</option>
+      <option>Internship</option>
+      <option>Full-Time</option>
+    </select>
+  </aside>
+
+  <section class="jobs" id="jobList">
+    <!-- Job Cards Injected Here -->
+  </section>
+</main>
+
+<footer>© 2025 University Internship Portal — All Rights Reserved</footer>
+
+<!-- Popup -->
+<div class="popup" id="popup">
+  <div class="popup-content">
+    <button class="close-btn" id="closePopup">✖</button>
+    <h2 id="jobTitle"></h2>
+    <div class="company" id="jobCompany"></div>
+    <p id="jobDesc"></p>
+    <button class="apply-btn" id="applyBtn">Apply Now</button>
+
+    <div class="apply-form" id="applyForm">
+      <input type="text" id="name" placeholder="Full Name" required />
+      <input type="email" id="email" placeholder="Email" required />
+      <input type="file" id="resume" accept=".pdf,.docx" />
+      <textarea id="message" placeholder="Why are you suitable for this role?"></textarea>
+      <button class="apply-btn" id="submitApp">Submit Application</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const jobs = [
+  {
+    title: "Frontend Developer Intern",
+    company: "TechNova Labs",
+    location: "Remote",
+    type: "Internship",
+    desc: "Work on live frontend projects using React and TailwindCSS. Gain mentorship and exposure to agile sprints.",
+  },
+  {
+    title: "UI/UX Designer",
+    company: "PixelWave Studio",
+    location: "Bangalore",
+    type: "Full-Time",
+    desc: "Design mobile/web interfaces, create prototypes, and collaborate with developers for modern user experiences.",
+  },
+  {
+    title: "Data Analyst Intern",
+    company: "InsightPro Analytics",
+    location: "Delhi",
+    type: "Internship",
+    desc: "Assist in data cleaning, dashboard creation, and visualization using Python, Power BI, or Tableau.",
+  },
+  {
+    title: "Backend Developer",
+    company: "CodeMatrix Pvt Ltd",
+    location: "Mumbai",
+    type: "Full-Time",
+    desc: "Build scalable APIs using Node.js and MongoDB, with real-world deployment exposure.",
+  }
+];
+
+const jobList = document.getElementById("jobList");
+const popup = document.getElementById("popup");
+const jobTitle = document.getElementById("jobTitle");
+const jobCompany = document.getElementById("jobCompany");
+const jobDesc = document.getElementById("jobDesc");
+const closePopup = document.getElementById("closePopup");
+const applyBtn = document.getElementById("applyBtn");
+const applyForm = document.getElementById("applyForm");
+const submitApp = document.getElementById("submitApp");
+
+// Render job cards
+function renderJobs(list) {
+  jobList.innerHTML = "";
+  list.forEach((job, i) => {
+    const card = document.createElement("div");
+    card.className = "job-card";
+    card.innerHTML = `
+      <h2>${job.title}</h2>
+      <div class="company">${job.company}</div>
+      <div class="meta">${job.location} • ${job.type}</div>
+    `;
+    card.addEventListener("click", () => openJob(job));
+    jobList.appendChild(card);
+  });
+}
+renderJobs(jobs);
+
+// Search & Filter
+const searchBox = document.getElementById("searchBox");
+const roleFilter = document.getElementById("roleFilter");
+const locationFilter = document.getElementById("locationFilter");
+const typeFilter = document.getElementById("typeFilter");
+
+function applyFilters() {
+  const search = searchBox.value.toLowerCase();
+  const role = roleFilter.value;
+  const location = locationFilter.value;
+  const type = typeFilter.value;
+
+  const filtered = jobs.filter(job =>
+    (job.title.toLowerCase().includes(search) || job.company.toLowerCase().includes(search)) &&
+    (role ? job.title.includes(role) : true) &&
+    (location ? job.location === location : true) &&
+    (type ? job.type === type : true)
+  );
+  renderJobs(filtered);
+}
+
+[searchBox, roleFilter, locationFilter, typeFilter].forEach(el =>
+  el.addEventListener("input", applyFilters)
+);
+
+// Popup open/close
+function openJob(job) {
+  popup.classList.add("active");
+  jobTitle.textContent = job.title;
+  jobCompany.textContent = job.company + " — " + job.location;
+  jobDesc.textContent = job.desc;
+  applyForm.classList.remove("active");
+}
+
+closePopup.addEventListener("click", () => popup.classList.remove("active"));
+
+applyBtn.addEventListener("click", () => applyForm.classList.toggle("active"));
+
+// Submit form (mock)
+submitApp.addEventListener("click", () => {
+  const name = document.getElementById("name").value;
+  const email = document.getElementById("email").value;
+
+  if (!name || !email) return alert("Please fill in all required fields!");
+
+  alert("✅ Application submitted successfully!");
+  popup.classList.remove("active");
+
+  // Save locally (mock)
+  const applied = JSON.parse(localStorage.getItem("appliedJobs") || "[]");
+  applied.push({ name, email, title: jobTitle.textContent, date: new Date().toISOString() });
+  localStorage.setItem("appliedJobs", JSON.stringify(applied));
+});
+</script>
+</body>
+</html>

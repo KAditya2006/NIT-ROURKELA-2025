@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Hackathon Hub | InternLearn</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: radial-gradient(circle at top left, #0f2027, #203a43, #2c5364);
+      color: #fff;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    header {
+      background: rgba(0, 255, 255, 0.1);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid rgba(255,255,255,0.15);
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header h1 {
+      font-size: 22px;
+      color: #00ffff;
+    }
+
+    header button {
+      background: #00ffff;
+      color: #111;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    header button:hover {
+      background: #00c2c2;
+    }
+
+    .container {
+      padding: 40px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+    }
+
+    .card {
+      background: rgba(255,255,255,0.08);
+      border-radius: 14px;
+      padding: 25px;
+      box-shadow: 0 0 20px rgba(0,255,255,0.1);
+      transition: 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+    .card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 0 25px rgba(0,255,255,0.3);
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      top: 0; left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(120deg, transparent, rgba(0,255,255,0.3), transparent);
+      transition: 0.5s;
+    }
+    .card:hover::before { left: 100%; }
+
+    .card h2 {
+      color: #00ffff;
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+
+    .card p {
+      color: #ddd;
+      font-size: 14px;
+      line-height: 1.5;
+      margin-bottom: 10px;
+    }
+
+    .details {
+      font-size: 13px;
+      color: #aaa;
+      margin-bottom: 15px;
+    }
+
+    .join-btn {
+      background: #00ffff;
+      color: #111;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .join-btn:hover {
+      background: #00c2c2;
+    }
+
+    .status {
+      display: inline-block;
+      padding: 5px 10px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    .ongoing { background: rgba(0,255,0,0.2); color: #00ff99; }
+    .upcoming { background: rgba(255,255,0,0.2); color: #ffff66; }
+    .ended { background: rgba(255,0,0,0.2); color: #ff6666; }
+
+    .popup {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.8);
+      display: none;
+      justify-content: center;
+      align-items: center;
+    }
+    .popup-content {
+      background: #16213e;
+      padding: 30px;
+      border-radius: 10px;
+      width: 400px;
+      text-align: center;
+    }
+    .popup-content h2 { color: #00ffff; }
+    .popup-content input {
+      width: 90%;
+      margin: 10px 0;
+      padding: 10px;
+      border-radius: 6px;
+      border: none;
+      outline: none;
+      background: rgba(255,255,255,0.1);
+      color: white;
+    }
+    .popup-content button {
+      margin: 10px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .submit-btn { background: #00ffff; color: #111; }
+    .cancel-btn { background: #ff6666; color: #fff; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>🚀 Hackathon Hub</h1>
+    <button onclick="window.location.href='dashboard.html'">Back</button>
+  </header>
+
+  <div class="container" id="hackathonContainer">
+    <!-- Hackathon Cards will appear here -->
+  </div>
+
+  <!-- Registration Popup -->
+  <div class="popup" id="registerPopup">
+    <div class="popup-content">
+      <h2>Register for Hackathon</h2>
+      <input type="text" id="name" placeholder="Enter your name" />
+      <input type="email" id="email" placeholder="Enter your email" />
+      <button class="submit-btn" onclick="submitRegistration()">Submit</button>
+      <button class="cancel-btn" onclick="closePopup()">Cancel</button>
+    </div>
+  </div>
+
+  <script>
+    const hackathons = [
+      {
+        title: "AI Innovation Challenge",
+        desc: "Build an AI project that solves real-world problems using ML, NLP, or Computer Vision.",
+        status: "ongoing",
+        date: "Oct 25–30, 2025"
+      },
+      {
+        title: "Web3 Hackfest",
+        desc: "Create decentralized applications and smart contracts that redefine user ownership.",
+        status: "upcoming",
+        date: "Nov 10–15, 2025"
+      },
+      {
+        title: "GreenTech Hackathon",
+        desc: "Innovate for sustainability! Design solutions for energy conservation and waste reduction.",
+        status: "ended",
+        date: "Sept 1–5, 2025"
+      }
+    ];
+
+    const container = document.getElementById("hackathonContainer");
+    const popup = document.getElementById("registerPopup");
+
+    // Load Hackathons
+    hackathons.forEach(h => {
+      const card = document.createElement("div");
+      card.className = "card";
+      card.innerHTML = `
+        <span class="status ${h.status}">${h.status.toUpperCase()}</span>
+        <h2>${h.title}</h2>
+        <p>${h.desc}</p>
+        <div class="details">📅 ${h.date}</div>
+        ${h.status !== "ended" ? `<button class="join-btn" onclick="openPopup('${h.title}')">Join Now</button>` : `<button class="join-btn" disabled>Closed</button>`}
+      `;
+      container.appendChild(card);
+    });
+
+    let currentHackathon = "";
+    function openPopup(title) {
+      currentHackathon = title;
+      popup.style.display = "flex";
+    }
+
+    function closePopup() {
+      popup.style.display = "none";
+    }
+
+    function submitRegistration() {
+      const name = document.getElementById("name").value;
+      const email = document.getElementById("email").value;
+      if (!name || !email) {
+        alert("Please fill all details!");
+        return;
+      }
+      alert(`✅ ${name}, you have successfully registered for ${currentHackathon}!`);
+      closePopup();
+    }
+  </script>
+</body>
+</html>
