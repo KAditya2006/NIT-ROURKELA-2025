@@ -1,0 +1,124 @@
+ * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #1a1a2e, #16213e);
+      color: white;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+
+    .container {
+      background: rgba(255, 255, 255, 0.08);
+      padding: 40px 50px;
+      border-radius: 16px;
+      width: 90%;
+      max-width: 600px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 28px;
+      color: #00ffff;
+      margin-bottom: 20px;
+    }
+
+    .question {
+      font-size: 20px;
+      margin-bottom: 20px;
+      min-height: 60px;
+    }
+
+    .options {
+      display: grid;
+      gap: 12px;
+    }
+
+    .option {
+      background: rgba(255,255,255,0.1);
+      padding: 12px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .option:hover {
+      background: rgba(0,255,255,0.3);
+    }
+
+    .option.correct {
+      background: #00ff99;
+      color: #111;
+      font-weight: bold;
+    }
+
+    .option.wrong {
+      background: #ff4d4d;
+    }
+
+    .footer {
+      margin-top: 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .timer {
+      font-size: 18px;
+      font-weight: 600;
+      color: #00ffff;
+    }
+
+    .next-btn {
+      background: #00ffff;
+      color: #111;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .next-btn:hover {
+      background: #00c2c2;
+    }
+
+    .result-box {
+      display: none;
+      text-align: center;
+      color: white;
+    }
+
+    .result-box h2 {
+      color: #00ff99;
+      margin-bottom: 10px;
+    }
+
+    .xp {
+      font-size: 22px;
+      color: #00ffff;
+      margin: 8px 0;
+    }
+
+    .retry-btn {
+      background: #ff6666;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-weight: 600;
+      color: white;
+      cursor: pointer;
+    }
+
+    .retry-btn:hover {
+      background: #ff3333;
+    }
