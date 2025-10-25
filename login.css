@@ -1,0 +1,122 @@
+ * {
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background: linear-gradient(135deg, #1e1e2f, #252540);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    .container {
+      width: 400px;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+      text-align: center;
+    }
+
+    h2 {
+      margin-bottom: 15px;
+      color: #4fc3f7;
+    }
+
+    .tab-buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    .tab-buttons button {
+      width: 48%;
+      padding: 10px;
+      border: none;
+      border-radius: 10px;
+      background: #333;
+      color: white;
+      cursor: pointer;
+      transition: 0.3s;
+      font-size: 15px;
+    }
+
+    .tab-buttons button.active {
+      background: #4fc3f7;
+      color: #000;
+      font-weight: 600;
+    }
+
+    .form {
+      display: none;
+      flex-direction: column;
+      gap: 15px;
+      text-align: left;
+    }
+
+    .form.active {
+      display: flex;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 10px;
+      border-radius: 10px;
+      border: none;
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+      font-size: 14px;
+      outline: none;
+    }
+
+    input::placeholder {
+      color: #ccc;
+    }
+
+    .role-selection {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .role {
+      flex: 1;
+      padding: 10px;
+      text-align: center;
+      border-radius: 8px;
+      border: 2px solid #4fc3f7;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .role.active {
+      background: #4fc3f7;
+      color: black;
+      font-weight: 600;
+    }
+
+    button.submit {
+      padding: 10px;
+      background: #4fc3f7;
+      color: black;
+      font-weight: 600;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button.submit:hover {
+      background: #81d4fa;
+    }
+
+    .error {
+      color: #ff6b6b;
+      font-size: 13px;
+      text-align: center;
+    }

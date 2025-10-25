@@ -1,0 +1,321 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>AI Dummy Interview — Voice + AI Evaluation</title>
+<link rel="stylesheet" href="dummy-interview-voice.css">
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <header>
+        <div>
+          <h1>🗣️ AI Dummy Interview — Voice + AI Evaluation</h1>
+          <div class="meta">Practice speaking; get AI feedback (confidence / clarity / accuracy)</div>
+        </div>
+        <div class="meta">Model: <strong>Server-evaluated (recommended)</strong></div>
+      </header>
+
+      <div>
+        <label class="small">Question</label>
+        <div id="questionBox" class="question">Loading question…</div>
+      </div>
+
+      <div class="controls">
+        <button id="speakQBtn">🔊 Speak Question</button>
+        <button id="startRecBtn">🎙 Start Recording</button>
+        <button id="stopRecBtn" class="secondary" disabled>⏹ Stop</button>
+        <div style="flex:1"></div>
+        <div class="rec-ind" id="recIndicator" style="display:none"><span class="dot"></span><span>Recording…</span></div>
+      </div>
+
+      <div style="margin-top:12px">
+        <label class="small">Transcript (edit if needed)</label>
+        <textarea id="transcriptArea" placeholder="Your spoken answer will appear here..."></textarea>
+      </div>
+
+      <div style="margin-top:12px; display:flex; gap:10px">
+        <button id="sendBtn">📨 Send for AI Evaluation</button>
+        <button id="localEvalBtn" class="secondary">🔁 Local Simulated Eval</button>
+        <button id="speakFeedbackBtn" class="secondary" disabled>🔊 Speak Feedback</button>
+        <div style="flex:1"></div>
+        <select id="voiceSelect" class="secondary" aria-label="Choose TTS voice">
+          <option value="">(Default voice)</option>
+        </select>
+      </div>
+
+      <div class="result">
+        <div class="panel">
+          <h3 style="margin:0 0 8px 0; color:var(--accent)">AI Feedback</h3>
+          <div id="feedbackText" class="transcript small">No feedback yet.</div>
+          <div style="margin-top:10px" class="small">Tip: edit transcript to include missing details before sending for better feedback.</div>
+        </div>
+
+        <div class="panel scores">
+          <div class="score-row"><div class="small">Confidence</div><div style="width:60%"><div class="bar"><i id="confBar" style="width:0%"></i></div></div><div id="confPct">0%</div></div>
+          <div class="score-row"><div class="small">Clarity</div><div style="width:60%"><div class="bar"><i id="clarBar" style="width:0%"></i></div></div><div id="clarPct">0%</div></div>
+          <div class="score-row"><div class="small">Accuracy</div><div style="width:60%"><div class="bar"><i id="accBar" style="width:0%"></i></div></div><div id="accPct">0%</div></div>
+        </div>
+      </div>
+
+      <footer>
+        <div class="hint">Try to speak for at least 20–40 seconds for better evaluation.</div>
+        <div>
+          <button id="nextQBtn" class="secondary">➡ Next Question</button>
+        </div>
+      </footer>
+    </div>
+  </div>
+
+<script>
+/* =========================
+   Question bank & utils
+   ========================= */
+const questions = [
+  "Tell me about yourself.",
+  "What are your strengths and weaknesses?",
+  "Explain a project you recently worked on and your role.",
+  "Why do you want this internship?",
+  "Describe how you debugged a problem in one of your projects.",
+  "How do you prioritize tasks under tight deadlines?",
+  "Explain OOP concepts with an example.",
+  "What is the difference between HTML and HTML5?",
+  "How does CSS Flexbox help in layout design?",
+  "Where do you see yourself in 5 years?"
+];
+
+let currentIndex = 0;
+const questionBox = document.getElementById('questionBox');
+const transcriptArea = document.getElementById('transcriptArea');
+const recIndicator = document.getElementById('recIndicator');
+
+function showQuestion(i){
+  currentIndex = i % questions.length;
+  questionBox.textContent = questions[currentIndex];
+}
+showQuestion(0);
+
+/* =========================
+   Text-to-Speech (speak Q & feedback)
+   ========================= */
+const speakQBtn = document.getElementById('speakQBtn');
+const speakFeedbackBtn = document.getElementById('speakFeedbackBtn');
+const voiceSelect = document.getElementById('voiceSelect');
+let voices = [];
+
+function populateVoices(){
+  voices = speechSynthesis.getVoices();
+  voiceSelect.innerHTML = `<option value="">(Default)</option>` + voices.map((v,i)=>`<option value="${i}">${v.name} — ${v.lang}</option>`).join('');
+}
+window.speechSynthesis.onvoiceschanged = populateVoices;
+populateVoices();
+
+function speakText(text){
+  if(!('speechSynthesis' in window)) return alert('TTS not supported in this browser.');
+  const ut = new SpeechSynthesisUtterance(text);
+  const idx = voiceSelect.value;
+  if(idx !== "") ut.voice = voices[parseInt(idx)];
+  ut.rate = 1;
+  ut.pitch = 1;
+  speechSynthesis.cancel();
+  speechSynthesis.speak(ut);
+}
+
+speakQBtn.addEventListener('click', ()=> speakText(questionBox.textContent));
+speakFeedbackBtn.addEventListener('click', ()=> {
+  const fb = document.getElementById('feedbackText').textContent;
+  if(fb && fb !== 'No feedback yet.') speakText(fb);
+});
+
+/* =========================
+   Speech-to-Text (Web Speech API)
+   ========================= */
+const startRecBtn = document.getElementById('startRecBtn');
+const stopRecBtn = document.getElementById('stopRecBtn');
+
+let recognition = null;
+let isRecording = false;
+if('webkitSpeechRecognition' in window || 'SpeechRecognition' in window){
+  const Rec = window.SpeechRecognition || window.webkitSpeechRecognition;
+  recognition = new Rec();
+  recognition.lang = 'en-IN';
+  recognition.interimResults = true;
+  recognition.maxAlternatives = 1;
+
+  let finalTranscript = '';
+
+  recognition.onstart = ()=> {
+    isRecording = true;
+    recIndicator.style.display = '';
+    startRecBtn.disabled = true;
+    stopRecBtn.disabled = false;
+    finalTranscript = '';
+  };
+
+  recognition.onresult = (evt)=>{
+    let interim = '';
+    for(let i=evt.resultIndex;i<evt.results.length;i++){
+      const res = evt.results[i];
+      if(res.isFinal) finalTranscript += res[0].transcript + ' ';
+      else interim += res[0].transcript;
+    }
+    transcriptArea.value = (finalTranscript + interim).trim();
+  };
+
+  recognition.onerror = (e)=> {
+    console.error('Speech recognition error', e);
+    alert('Speech recognition error: ' + e.error);
+    stopRecording();
+  };
+
+  recognition.onend = ()=> {
+    isRecording = false;
+    recIndicator.style.display = 'none';
+    startRecBtn.disabled = false;
+    stopRecBtn.disabled = true;
+  };
+
+  function startRecording(){
+    if(!recognition) return alert('Speech recognition not supported');
+    transcriptArea.value = '';
+    recognition.start();
+  }
+  function stopRecording(){
+    if(!recognition) return;
+    recognition.stop();
+  }
+
+  startRecBtn.addEventListener('click', startRecording);
+  stopRecBtn.addEventListener('click', stopRecording);
+
+} else {
+  startRecBtn.disabled = true;
+  stopRecBtn.disabled = true;
+  recIndicator.style.display = 'none';
+  startRecBtn.title = 'Speech Recognition not available in this browser';
+}
+
+/* =========================
+   Send for AI Evaluation (server expected)
+   ========================= */
+const sendBtn = document.getElementById('sendBtn');
+const localEvalBtn = document.getElementById('localEvalBtn');
+const feedbackText = document.getElementById('feedbackText');
+const confBar = document.getElementById('confBar');
+const clarBar = document.getElementById('clarBar');
+const accBar = document.getElementById('accBar');
+const confPct = document.getElementById('confPct');
+const clarPct = document.getElementById('clarPct');
+const accPct = document.getElementById('accPct');
+
+async function displayScores(conf, clar, acc){
+  confBar.style.width = conf + '%'; confPct.textContent = `${conf}%`;
+  clarBar.style.width = clar + '%'; clarPct.textContent = `${clar}%`;
+  accBar.style.width = acc + '%'; accPct.textContent = `${acc}%`;
+  speakFeedbackBtn.disabled = false;
+}
+
+// Replace this URL with your real backend evaluation endpoint
+// The endpoint should accept JSON: { question, transcript, userId? } and return { feedbackText, confidence, clarity, accuracy }
+const EVAL_ENDPOINT = '/evaluate'; // example - you must implement server
+
+sendBtn.addEventListener('click', async ()=>{
+  const transcript = transcriptArea.value.trim();
+  if(!transcript) return alert('Please provide an answer (speak or type) before evaluating.');
+
+  feedbackText.textContent = '⏳ Sending to AI for evaluation...';
+  await displayScores(0,0,0);
+
+  try {
+    // try server evaluation
+    const resp = await fetch(EVAL_ENDPOINT, {
+      method:'POST',
+      headers:{ 'Content-Type':'application/json' },
+      body: JSON.stringify({ question: questionBox.textContent, transcript })
+    });
+
+    if(!resp.ok) throw new Error('No server response');
+
+    const json = await resp.json();
+    // expected: { feedbackText, confidence, clarity, accuracy }
+    feedbackText.textContent = json.feedbackText || 'No feedback returned.';
+    await displayScores(Math.round(json.confidence), Math.round(json.clarity), Math.round(json.accuracy));
+
+    // save to local history (optional)
+    saveSession({ question: questionBox.textContent, transcript, ...json, createdAt: new Date().toISOString() });
+
+  } catch(err){
+    console.warn('Server eval failed — using local fallback', err);
+    // Fallback to local simulated eval
+    localEvaluate();
+  }
+});
+
+/* =========================
+   Local simulated evaluation (fallback)
+   ========================= */
+function localEvaluate(){
+  const t = transcriptArea.value.trim();
+  const words = t.split(/\s+/).filter(Boolean).length;
+  const confidence = Math.min(95, Math.round(Math.min(80, words * 1.6) + Math.random()*15));
+  const clarity = Math.min(95, Math.round(50 + Math.random()*40));
+  const accuracy = Math.min(95, Math.round(45 + Math.random()*45));
+
+  const fb = generateLocalFeedback(t);
+  feedbackText.textContent = fb;
+  displayScores(confidence, clarity, accuracy);
+  saveSession({ question: questionBox.textContent, transcript: t, feedbackText: fb, confidence, clarity, accuracy, createdAt: new Date().toISOString() });
+}
+
+document.getElementById('localEvalBtn').addEventListener('click', localEvaluate);
+
+/* =========================
+   Session history (localStorage)
+   ========================= */
+function saveSession(obj){
+  const key = 'interviewSessions';
+  const arr = JSON.parse(localStorage.getItem(key) || '[]');
+  arr.unshift(obj);
+  localStorage.setItem(key, JSON.stringify(arr.slice(0,50)));
+}
+
+/* =========================
+   Next question
+   ========================= */
+document.getElementById('nextQBtn').addEventListener('click', ()=>{
+  saveAndClearThenNext();
+});
+
+function saveAndClearThenNext(){
+  // keep session saved already by saveSession on eval; just clear transcript & feedback
+  transcriptArea.value = '';
+  feedbackText.textContent = 'No feedback yet.';
+  displayScores(0,0,0);
+  speakFeedbackBtn.disabled = true;
+  showQuestion(currentIndex+1);
+}
+
+/* =========================
+   Local feedback generator (simple heuristics)
+   ========================= */
+function generateLocalFeedback(text){
+  if(!text) return "No answer provided.";
+  const words = text.split(/\s+/).filter(Boolean).length;
+  if(words < 10) return "Short answer — try to expand, give examples and structure (Situation → Task → Action → Result).";
+  if(words < 30) return "Good start — add a concise example and mention your result or impact.";
+  return "Solid answer! Clear structure and examples — mention metrics if available to strengthen it.";
+}
+
+/* =========================
+   Init / keyboard shortcuts
+   ========================= */
+window.addEventListener('keydown', (e)=>{
+  if(e.key === 'r' && !isRecording) startRecBtn.click();
+  if(e.key === 's') stopRecBtn.click();
+  if(e.key === 'Enter' && (e.ctrlKey || e.metaKey)) sendBtn.click();
+});
+
+</script>
+</body>
+</html>
