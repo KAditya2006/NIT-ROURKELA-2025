@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Learning Dashboard | AI & Machine Learning Course</title>
+  <link rel="stylesheet" href="course-ai.css">
+</head>
+<body>
+
+  <!-- Left Column -->
+  <div class="sidebar">
+    <h2>🤖 Courses</h2>
+    <div class="language" onclick="goTo('course-webdev.html')">Web Dev</div>
+    <div class="language" onclick="goTo('course-python.html')">Python</div>
+    <div class="language" onclick="goTo('course-datascience.html')">Data Science</div>
+    <div class="language active" onclick="goTo('course-ai.html')">AI / ML</div>
+    <div class="language" onclick="goTo('course-uiux.html')">UI/UX Design</div>
+  </div>
+
+  <!-- Middle Column -->
+  <div class="main" id="mainSection">
+    <h2>Learning Path: AI & Machine Learning</h2>
+    <div class="level-map">
+      <div class="level level1" onclick="loadLevel('Introduction to AI')">Level 1 </div>
+      <div class="level level2" onclick="loadLevel('Supervised Learning')">Level 2 </div>
+      <div class="level level3" onclick="loadLevel('Unsupervised Learning')">Level 3 </div>
+      <div class="level level4" onclick="loadLevel('Neural Networks & Deep Learning')">Level 4 </div>
+      <div class="level level5" onclick="loadLevel('AI Ethics & Applications')">Level 5</div>
+      <div class="level level6" onclick="loadLevel('Capstone AI Project')">Level 6 </div>
+    </div>
+  </div>
+
+  <!-- Right Column -->
+  <div class="message-panel">
+    <div>
+      <div class="message-box">
+        🧠 <b>Tip:</b> Start small — focus on understanding how models learn from data before diving into deep learning.
+      </div>
+
+      <div class="video-box">
+        <h3>🎥 Tutorial Video</h3>
+        <video id="tutorialVideo" controls>
+          <source src="videos/ai-intro.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+
+        <div class="quiz-box">
+          <p><b>Quick Quiz:</b> What is the main goal of AI?</p>
+          <input type="radio" name="q1" value="a" /> To replace humans <br />
+          <input type="radio" name="q1" value="b" /> To make machines think and learn like humans <br />
+          <input type="radio" name="q1" value="c" /> To create websites <br />
+          <button onclick="checkAnswer()">Submit</button>
+          <div id="quizMessage" class="message"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="message-box">
+      ⚙️ You’ve earned <b>+100 XP</b> for completing “Supervised Learning” — keep training those models!
+    </div>
+  </div>
+
+  <script>
+    // Navigation
+    function goTo(page) {
+      window.location.href = page;
+    }
+
+    // Load Level function
+    function loadLevel(levelName) {
+      alert("Opening: " + levelName);
+    }
+
+    // Quiz logic
+    function checkAnswer() {
+      const selected = document.querySelector('input[name="q1"]:checked');
+      const msg = document.getElementById("quizMessage");
+      const video = document.getElementById("tutorialVideo");
+
+      if (!selected) {
+        msg.style.color = "red";
+        msg.textContent = "⚠️ Please select an answer.";
+        return;
+      }
+
+      if (selected.value === "b") {
+        msg.style.color = "green";
+        msg.textContent = "✅ Correct! The goal of AI is to make machines learn intelligently.";
+      } else {
+        msg.style.color = "red";
+        msg.textContent = "❌ Incorrect! Replaying the explanation video...";
+        video.src = "videos/ai-basics.mp4";
+        video.play();
+      }
+    }
+  </script>
+
+</body>
+</html>

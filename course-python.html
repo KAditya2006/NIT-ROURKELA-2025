@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Learning Dashboard | Python Course</title>
+  <link rel="stylesheet" href="course-python.css" />
+</head>
+<body>
+
+  <!-- Left Column -->
+  <div class="sidebar">
+    <h2>📚 Courses</h2>
+    <div class="language" onclick="goTo('course-webdev.html')">Web Development</div>
+    <div class="language" onclick="goTo('course-ai.html')">AI/ML</div>
+    <div class="language" onclick="goTo('course-datascience.html')">Datascience</div>
+    <div class="language" onclick="goTo('course-cyber.html')">Cyber Security</div>
+    <div class="language active" onclick="goTo('course-python.html')">Python</div>
+  </div>
+
+  <!-- Middle Column -->
+  <div class="main" id="mainSection">
+    <h2>Learning Path: Python</h2>
+    <div class="level-map">
+      <div class="level level1" onclick="loadLevel('Python Basics')">Level 1</div>
+      <div class="level level2" onclick="loadLevel('Control Flow')">Level 2 </div>
+      <div class="level level3" onclick="loadLevel('Functions & Modules')">Level 3 </div>
+      <div class="level level4" onclick="loadLevel('OOP in Python')">Level 4</div>
+      <div class="level level5" onclick="loadLevel('Project')">Level 5</div>
+    </div>
+  </div>
+
+  <!-- Right Column -->
+  <div class="message-panel">
+    <div>
+      <div class="message-box">
+        🧠 <b>Tip:</b> Start with clear understanding of variables and data types — Python is all about simplicity and readability!
+      </div>
+
+      <div class="video-box">
+        <h3>🎥 Video Preview</h3>
+        <video id="tutorialVideo" controls>
+          <source src="videos/python-intro.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+
+        <div class="quiz-box">
+          <p><b>Quick Quiz:</b> What symbol is used to comment a line in Python?</p>
+          <input type="radio" name="q1" value="a" /> // comment <br />
+          <input type="radio" name="q1" value="b" /> <!-- comment --> <br />
+          <input type="radio" name="q1" value="c" /> # comment <br />
+          <button onclick="checkAnswer()">Submit</button>
+          <div id="quizMessage" class="message"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="message-box">
+      🏆 You’ve earned <b>+60 XP</b> in Python this week. Keep going strong!
+    </div>
+  </div>
+
+  <script>
+    // Navigate between course pages
+    function goTo(page) {
+      window.location.href = page;
+    }
+
+    // Level click simulation
+    function loadLevel(levelName) {
+      alert("Opening: " + levelName);
+    }
+
+    // Quiz function
+    function checkAnswer() {
+      const selected = document.querySelector('input[name="q1"]:checked');
+      const msg = document.getElementById("quizMessage");
+      const video = document.getElementById("tutorialVideo");
+
+      if (!selected) {
+        msg.style.color = "red";
+        msg.textContent = "⚠️ Please select an answer.";
+        return;
+      }
+
+      if (selected.value === "c") {
+        msg.style.color = "green";
+        msg.textContent = "✅ Correct! # is used for comments.";
+      } else {
+        msg.style.color = "red";
+        msg.textContent = "❌ Incorrect! Watch again for clarity.";
+        video.src = "videos/python-comments.mp4";
+        video.play();
+      }
+    }
+  </script>
+
+</body>
+</html>

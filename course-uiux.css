@@ -1,0 +1,217 @@
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      background-color: #f5f6fa;
+      color: #333;
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* Left Sidebar */
+    .sidebar {
+      width: 20%;
+      background: #ff6b6b;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      padding: 20px;
+      overflow-y: auto;
+    }
+
+    .sidebar h2 {
+      margin-bottom: 20px;
+      font-size: 1.4rem;
+      text-align: center;
+    }
+
+    .language {
+      background: rgba(255, 255, 255, 0.15);
+      margin-bottom: 10px;
+      padding: 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.3s;
+      text-align: center;
+    }
+
+    .language:hover,
+    .language.active {
+      background: #fff;
+      color: #ff6b6b;
+      font-weight: 600;
+    }
+
+    /* Middle Section */
+    .main {
+      width: 55%;
+      background: #fff;
+      border-right: 1px solid #eee;
+      border-left: 1px solid #eee;
+      padding: 20px;
+      overflow-y: auto;
+    }
+
+    .main h2 {
+      color: #ff6b6b;
+      margin-bottom: 20px;
+    }
+
+    
+    .level-map {
+      display: flex;
+      flex-direction: column;
+      gap: 25px;
+      align-items: center;
+      margin-top: 30px;
+      position: relative;
+    }
+
+    .level {
+      width:100px;
+      height:100px;
+      padding: 20px;
+      border-radius: 12px;
+      background: #e8f5ec;
+      position: relative;
+      text-align: center;
+      cursor: pointer;
+      transition: 0.3s;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    
+      
+    }
+
+    .level:hover {
+      background: #ffc7c7;
+      transform: scale(1.03);
+    }
+
+    .level::after {
+      /* content: ""; */
+      position: absolute;
+      bottom: -20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 2px;
+      height: 20px;
+      background: #ff6b6b;
+    }
+
+    .level:last-child::after {
+      display: none;
+    }
+.level1{
+      position:absolute;
+      top:0;
+        border:2 px solid #198754;
+
+    }
+    .level2{
+      position:absolute;
+      top:100px;
+      left:250px;
+        border:2 px solid #198754;
+    }
+    .level3{
+      position:absolute;
+      top:200px;
+        border:2 px solid #198754;
+    }
+    .level4{
+      position:absolute;
+      top:300px;
+      left:250px;
+        border:2 px solid #198754;
+    }
+    .level5{
+      position:absolute;
+      top:400px;
+        border:2 px solid #198754;
+    }
+
+    .level6{
+      position:absolute;
+      top:500px;
+      left:250px;
+        border:2 px solid #198754;
+    }
+    /* Right Section */
+    .message-panel {
+      width: 25%;
+      background: #fff8f8;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .message-box {
+      background: #ffeaea;
+      padding: 15px;
+      border-radius: 10px;
+      margin-bottom: 15px;
+      font-size: 0.95rem;
+    }
+
+    .video-box {
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      padding: 15px;
+    }
+
+    video {
+      width: 100%;
+      border-radius: 8px;
+    }
+
+    .quiz-box {
+      margin-top: 15px;
+    }
+
+    .quiz-box button {
+      background: #ff6b6b;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 8px;
+    }
+
+    .quiz-box button:hover {
+      background: #d94f4f;
+    }
+
+    .message {
+      margin-top: 10px;
+      font-weight: 500;
+    }
+
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background-color: rgba(0, 0, 0, 0.2);
+      border-radius: 4px;
+    }
+
+    @media (max-width: 900px) {
+      body {
+        flex-direction: column;
+      }
+      .sidebar, .main, .message-panel {
+        width: 100%;
+        height: auto;
+      }
+    }

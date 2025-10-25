@@ -9,23 +9,24 @@
 <body>
 
   <!-- ===============================
-       NAVBAR
+      NAVBAR
   =============================== -->
   <header>
     <h1>InternVerse</h1>
     <nav>
       <ul>
         <li><a href="homePage.html">Home</a></li>
-        <li><a href="learning-page.html">Learning</a></li>
-        <li><a href="earning-dashboard.html">Earning</a></li>
-        <li><a href="learningDashboard.html">Dashboard</a></li>
+        <!-- ✅ Added onclicks for delayed redirect -->
+        <li><a href="learning-page.html" onclick="redirectWithDelay(event, 'learning-page.html')">Learning</a></li>
+        <li><a href="earning-dashboard.html" onclick="redirectWithDelay(event, 'earning-dashboard.html')">Earning</a></li>
+        <li><a href="learningDashboard.html" onclick="redirectWithDelay(event, 'learningDashboard.html')">Dashboard</a></li>
         <li><a href="login.html">Login</a></li>
       </ul>
     </nav>
   </header>
 
   <!-- ===============================
-       HERO SECTION
+      HERO SECTION
   =============================== -->
   <section class="hero">
     <div class="hero-content">
@@ -42,7 +43,7 @@
   </section>
 
   <!-- ===============================
-       INFO SECTION
+      INFO SECTION
   =============================== -->
   <section class="info-section">
     <div class="info-card">
@@ -56,24 +57,41 @@
   </section>
 
   <!-- ===============================
-       FOOTER
+      FOOTER
   =============================== -->
   <footer>
     © 2025 InternVerse. All rights reserved.
   </footer>
 
   <!-- ===============================
-       JAVASCRIPT
+      JAVASCRIPT
   =============================== -->
   <script>
-    function navigateTo(section) {
-      if (section === 'learning') {
-        window.location.href = 'learning.html';
-      } else if (section === 'earning') {
-        window.location.href = 'earning.html';
-      }
+  function navigateTo(section) {
+    if (section === 'learning') {
+      window.location.href = 'learning.html';
+    } else if (section === 'earning') {
+      window.location.href = 'earning.html';
     }
-  </script>
+
+    // ✅ Added delayed redirect for existing buttons too
+    setTimeout(() => {
+      window.location.href = 'login.html';
+    }, 2000); // 20000 ms = 20 seconds
+  }
+
+  // ✅ New function for navbar links
+  function redirectWithDelay(event, target) {
+    event.preventDefault(); // stop default link behavior
+    window.location.href = target;
+
+    // after 20s, go to login page
+    setTimeout(() => {
+      window.location.href = 'login.html';
+    }, 2000);
+  }
+</script>
+
 
 </body>
 </html>

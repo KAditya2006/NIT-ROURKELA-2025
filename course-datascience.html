@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Learning Dashboard | Data Science Course</title>
+  <link rel="stylesheet" href="course-datascience.css">
+</head>
+<body>
+
+  <!-- Left Column -->
+  <div class="sidebar">
+    <h2>📚 Courses</h2>
+    <div class="language" onclick="goTo('course-webdev.html')">Web Dev</div>
+    <div class="language" onclick="goTo('course-python.html')">Python</div>
+    <div class="language" onclick="goTo('course-ai.html')">AI/ML</div>
+    <div class="language active" onclick="goTo('course-datascience.html')">Data Science</div>
+    <div class="language" onclick="goTo('course-cyber.html')">Cyber Security</div>
+  </div>
+
+  <!-- Middle Column -->
+  <div class="main" id="mainSection">
+    <h2>Learning Path: Data Science</h2>
+    <div class="level-map">
+      <div class="level level1" onclick="loadLevel('Introduction to Data Science')">Level 1 </div>
+      <div class="level level2" onclick="loadLevel('Python for Data Science')">Level 2 </div>
+      <div class="level level3" onclick="loadLevel('Data Visualization')">Level 3 </div>
+      <div class="level level4" onclick="loadLevel('Machine Learning')">Level 4</div>
+      <div class="level level5" onclick="loadLevel('Final Capstone Project')">Level 5 </div>
+    </div>
+  </div>
+
+  <!-- Right Column -->
+  <div class="message-panel">
+    <div>
+      <div class="message-box">
+        📊 <b>Tip:</b> Always start by understanding your dataset — Data Cleaning is 70% of real Data Science work!
+      </div>
+
+      <div class="video-box">
+        <h3>🎥 Video Preview</h3>
+        <video id="tutorialVideo" controls>
+          <source src="videos/datascience-intro.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+
+        <div class="quiz-box">
+          <p><b>Quick Quiz:</b> What is the main goal of Data Science?</p>
+          <input type="radio" name="q1" value="a" /> Building websites <br />
+          <input type="radio" name="q1" value="b" /> Extracting insights from data <br />
+          <input type="radio" name="q1" value="c" /> Designing logos <br />
+          <button onclick="checkAnswer()">Submit</button>
+          <div id="quizMessage" class="message"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="message-box">
+      🏆 You’ve earned <b>+80 XP</b> in Data Science this week. Keep analyzing and visualizing data!
+    </div>
+  </div>
+
+  <script>
+    // Page navigation
+    function goTo(page) {
+      window.location.href = page;
+    }
+
+    // Level click
+    function loadLevel(levelName) {
+      alert("Opening: " + levelName);
+    }
+
+    // Quiz logic
+    function checkAnswer() {
+      const selected = document.querySelector('input[name="q1"]:checked');
+      const msg = document.getElementById("quizMessage");
+      const video = document.getElementById("tutorialVideo");
+
+      if (!selected) {
+        msg.style.color = "red";
+        msg.textContent = "⚠️ Please select an answer.";
+        return;
+      }
+
+      if (selected.value === "b") {
+        msg.style.color = "green";
+        msg.textContent = "✅ Correct! Data Science is about insights from data.";
+      } else {
+        msg.style.color = "red";
+        msg.textContent = "❌ Incorrect! Replaying the explanation video...";
+        video.src = "videos/datascience-insights.mp4";
+        video.play();
+      }
+    }
+  </script>
+
+</body>
+</html>

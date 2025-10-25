@@ -1,0 +1,220 @@
+  * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      background-color: #0a0f1f;
+      color: #fff;
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 20%;
+      background: #141b2d;
+      display: flex;
+      flex-direction: column;
+      padding: 20px;
+      overflow-y: auto;
+    }
+
+    .sidebar h2 {
+      margin-bottom: 20px;
+      font-size: 1.4rem;
+      text-align: center;
+      color: #00d4ff;
+    }
+
+    .language {
+      background: rgba(255, 255, 255, 0.1);
+      margin-bottom: 10px;
+      padding: 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.3s;
+      text-align: center;
+    }
+
+    .language:hover,
+    .language.active {
+      background: #00d4ff;
+      color: #0a0f1f;
+      font-weight: 600;
+    }
+
+    /* Middle Section */
+    .main {
+      width: 55%;
+      background: #0f1629;
+      border-left: 1px solid #1e2b4a;
+      border-right: 1px solid #1e2b4a;
+      padding: 20px;
+      overflow-y: auto;
+    }
+
+    .main h2 {
+      color: #00d4ff;
+      margin-bottom: 20px;
+    }
+.level-map {
+      display: flex;
+      flex-direction: column;
+      gap: 25px;
+      align-items: center;
+      margin-top: 30px;
+      position: relative;
+    }
+
+    .level {
+      width:100px;
+      height:100px;
+      padding: 20px;
+      border-radius: 12px;
+      background: #e8f5ec;
+      position: relative;
+      text-align: center;
+      cursor: pointer;
+      transition: 0.3s;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    
+      
+    }
+
+    .level:hover {
+      background: #00d4ff;
+      color: #0a0f1f;
+      transform: scale(1.03);
+    }
+
+    .level::after {
+      /* content: ""; */
+      position: absolute;
+      bottom: -20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 2px;
+      height: 20px;
+      background: #00d4ff;
+    }
+
+    .level:last-child::after {
+      display: none;
+    }
+
+    
+     .level1{
+      position:absolute;
+      top:0;
+        border:2 px solid #198754;
+
+    }
+    .level2{
+      position:absolute;
+      top:100px;
+      left:250px;
+        border:2 px solid #198754;
+    }
+    .level3{
+      position:absolute;
+      top:200px;
+        border:2 px solid #198754;
+    }
+    .level4{
+      position:absolute;
+      top:300px;
+      left:250px;
+        border:2 px solid #198754;
+    }
+    .level5{
+      position:absolute;
+      top:400px;
+        border:2 px solid #198754;
+    }
+
+    .level6{
+      position:absolute;
+      top:500px;
+      left:250px;
+        border:2 px solid #198754;
+    }
+
+    /* Right Section */
+    .message-panel {
+      width: 25%;
+      background: #0f1629;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .message-box {
+      background: #1a213a;
+      padding: 15px;
+      border-radius: 10px;
+      margin-bottom: 15px;
+      font-size: 0.95rem;
+      border-left: 4px solid #00d4ff;
+    }
+
+    .video-box {
+      background: #1a213a;
+      border-radius: 10px;
+      padding: 15px;
+    }
+
+    video {
+      width: 100%;
+      border-radius: 8px;
+    }
+
+    .quiz-box {
+      margin-top: 15px;
+    }
+
+    .quiz-box button {
+      background: #00d4ff;
+      color: #0a0f1f;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 8px;
+      font-weight: 600;
+    }
+
+    .quiz-box button:hover {
+      background: #00bde0;
+    }
+
+    .message {
+      margin-top: 10px;
+      font-weight: 500;
+    }
+
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background-color: rgba(255, 255, 255, 0.2);
+      border-radius: 4px;
+    }
+
+    @media (max-width: 900px) {
+      body {
+        flex-direction: column;
+      }
+      .sidebar, .main, .message-panel {
+        width: 100%;
+        height: auto;
+      }
+    }
