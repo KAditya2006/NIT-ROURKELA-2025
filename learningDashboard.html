@@ -15,11 +15,11 @@
     <div>
       <h2>InternVerse</h2>
       <ul class="menu">
-        <li><a href="#" class="active">📚 My Courses</a></li>
-        <li><a href="#">🏆 Leaderboard</a></li>
-        <li><a href="#">⚙️ Challenge Mode</a></li>
-        <li><a href="#">🎓 Certificates</a></li>
-        <li><a href="#">🎮 Rewards</a></li>
+        <li><a href="learningDashboard.html" class="active">📚 My Courses</a></li>
+        <li><a href="leaderboard.html">🏆 Leaderboard</a></li>
+        <li><a href="challenge-mode.html">⚙️ Challenge Mode</a></li>
+        <li><a href="ceartificatePage.html">🎓 Certificates</a></li>
+        <li><a href="reward.html">🎮 Rewards</a></li>
       </ul>
     </div>
     <div class="logout-btn" onclick="logout()">Logout</div>
@@ -95,7 +95,7 @@
     function logout() {
       const confirmLogout = confirm("Are you sure you want to logout?");
       if (confirmLogout) {
-        window.location.href = "index.html";
+        window.location.href = "login.html";
       }
     }
   </script>

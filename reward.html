@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Rewards & Achievements | Learn & Earn</title>
+  <link rel="stylesheet" href="reward.css">
+</head>
+<body>
+  <h1>🏅 Your Rewards & Achievements</h1>
+
+  <div class="stats">
+    <div class="card">
+      <h2 id="points">1200</h2>
+      <p>Total Points</p>
+    </div>
+    <div class="card">
+      <h2 id="level">5</h2>
+      <p>Current Level</p>
+    </div>
+    <div class="card">
+      <h2 id="rank">#12</h2>
+      <p>Leaderboard Rank</p>
+    </div>
+  </div>
+
+  <div class="progress-container">
+    <p>Progress to next level (Level <span id="nextLevel">6</span>)</p>
+    <div class="progress-bar">
+      <div class="progress" id="progress"></div>
+    </div>
+  </div>
+
+  <div class="badge-section">
+    <h2>🏆 Unlocked Badges</h2>
+    <div class="badges" id="badgeContainer"></div>
+  </div>
+
+  <div class="reward-shop">
+    <h2>🎁 Reward Shop</h2>
+    <div class="reward-items" id="rewardContainer"></div>
+  </div>
+
+  <script>
+    // Dummy Data
+    const progressValue = 70;
+    const badges = [
+      { name: "Fast Learner", unlocked: true, img: "https://cdn-icons-png.flaticon.com/512/616/616408.png" },
+      { name: "Quiz Master", unlocked: true, img: "https://cdn-icons-png.flaticon.com/512/616/616430.png" },
+      { name: "Consistency King", unlocked: false, img: "https://cdn-icons-png.flaticon.com/512/616/616408.png" },
+      { name: "Top Scorer", unlocked: false, img: "https://cdn-icons-png.flaticon.com/512/616/616530.png" },
+    ];
+
+    const rewards = [
+      { name: "Amazon Gift Card", cost: 500 },
+      { name: "LinkedIn Certificate", cost: 300 },
+      { name: "Internship Voucher", cost: 800 },
+      { name: "Premium Course Access", cost: 1000 },
+    ];
+
+    // Progress Animation
+    const progress = document.getElementById("progress");
+    setTimeout(() => {
+      progress.style.width = progressValue + "%";
+    }, 500);
+
+    // Render Badges
+    const badgeContainer = document.getElementById("badgeContainer");
+    badges.forEach(b => {
+      const div = document.createElement("div");
+      div.className = `badge ${b.unlocked ? "unlocked" : ""}`;
+      div.innerHTML = `<img src="${b.img}" alt=""><p>${b.name}</p>`;
+      badgeContainer.appendChild(div);
+    });
+
+    // Render Rewards
+    const rewardContainer = document.getElementById("rewardContainer");
+    rewards.forEach(r => {
+      const div = document.createElement("div");
+      div.className = "item";
+      div.innerHTML = `
+        <h3>${r.name}</h3>
+        <p>Cost: ${r.cost} pts</p>
+        <button class="redeem-btn" onclick="redeem('${r.name}', ${r.cost})">Redeem</button>
+      `;
+      rewardContainer.appendChild(div);
+    });
+
+    // Redeem Function
+    function redeem(name, cost) {
+      const points = parseInt(document.getElementById("points").textContent);
+      if (points >= cost) {
+        document.getElementById("points").textContent = points - cost;
+        alert(`🎉 You redeemed ${name}!`);
+      } else {
+        alert("❌ Not enough points!");
+      }
+    }
+  </script>
+</body>
+</html>
