@@ -6,7 +6,8 @@
     }
 
     body {
-      background: linear-gradient(135deg, #1a1a2e, #16213e);
+      /* background: linear-gradient(135deg, #1a1a2e, #16213e); */
+      background-color: black;
       color: white;
       min-height: 100vh;
       display: flex;
@@ -51,7 +52,8 @@
     }
 
     .option:hover {
-      background: rgba(0,255,255,0.3);
+      /* background: rgba(0,255,255,0.3); */
+      scale: 1.05;
     }
 
     .option.correct {
@@ -78,7 +80,8 @@
     }
 
     .next-btn {
-      background: #00ffff;
+      /* background: #00ffff; */
+      background-color: #49df2a;
       color: #111;
       border: none;
       padding: 10px 20px;
@@ -89,7 +92,9 @@
     }
 
     .next-btn:hover {
-      background: #00c2c2;
+      /* background: #00c2c2; */
+      background-color: #31d41c;
+      scale: 1.08;
     }
 
     .result-box {
@@ -110,7 +115,7 @@
     }
 
     .retry-btn {
-      background: #ff6666;
+      background: #ef0606;
       border: none;
       padding: 10px 20px;
       border-radius: 8px;

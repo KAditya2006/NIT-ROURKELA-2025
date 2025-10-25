@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Next Challenge | InternLearn</title>
+  <link rel="stylesheet" href="challenge-mode.css">
+</head>
+<body>
+
+  <div class="container" id="quizBox">
+    <h1>🚀 Next Challenge - Hard Level</h1>
+    <div class="timer" id="timer">Time: 60s</div>
+    <div class="question" id="question">Loading...</div>
+    <div class="options" id="options"></div>
+
+    <div class="footer">
+      <div id="progress"></div>
+      <button class="next-btn" id="nextBtn" disabled>Next</button>
+    </div>
+  </div>
+
+  <div class="result-box" id="resultBox">
+    <h2>🏆 Challenge Complete!</h2>
+    <p>You answered <span id="scoreCount"></span> questions correctly.</p>
+    <p class="xp">🎯 XP Earned: <span id="xpPoints"></span></p>
+    <!-- Buttons will be dynamically added here -->
+  </div>
+
+  <script>
+    // Hard-level questions
+    const questions = [
+      { q: "Which HTML element is used to define metadata such as viewport or charset?", options: ["<meta>", "<head>", "<link>", "<title>"], correct: 0 },
+      { q: "Which CSS property is used to create a flex container?", options: ["display: flex;", "position: flex;", "align-items: flex;", "float: flex;"], correct: 0 },
+      { q: "What will `console.log(typeof NaN)` print in JavaScript?", options: ["number", "NaN", "undefined", "object"], correct: 0 },
+      { q: "Which CSS selector targets all direct children of an element?", options: [">", "+", "~", " "], correct: 0 },
+      { q: "Which method is used to convert a JSON string into a JavaScript object?", options: ["JSON.parse()", "JSON.stringify()", "JSON.convert()", "JSON.objectify()"], correct: 0 },
+      { q: "Which of the following is true about JavaScript closures?", options: ["They allow functions to access variables from an outer function after it has executed","They are used only in classes","They can only store global variables","They are a type of array method"], correct: 0 },
+      { q: "In CSS Grid, which property defines the number of columns in a grid container?", options: ["grid-template-columns","grid-columns","grid-columns-count","columns"], correct: 0 },
+      { q: "Which HTML5 API allows web apps to store data locally in the browser?", options: ["localStorage","sessionStorage","cookies","IndexedDB"], correct: 0 },
+      { q: "What does `event.preventDefault()` do in JavaScript?", options: ["Prevents the default action of an event","Stops event propagation","Cancels a function call","Deletes the event listener"], correct: 0 },
+      { q: "Which pseudo-class in CSS selects an element when a user hovers over it?", options: [":hover", ":active", ":focus", ":visited"], correct: 0 }
+    ];
+
+    let currentIndex = 0;
+    let score = 0;
+    let timer = 60;
+    let interval;
+
+    const questionEl = document.getElementById("question");
+    const optionsEl = document.getElementById("options");
+    const nextBtn = document.getElementById("nextBtn");
+    const timerEl = document.getElementById("timer");
+    const progressEl = document.getElementById("progress");
+    const quizBox = document.getElementById("quizBox");
+    const resultBox = document.getElementById("resultBox");
+
+    function startChallenge() {
+      currentIndex = 0;
+      score = 0;
+      timer = 60;
+      quizBox.style.display = "block";
+      resultBox.style.display = "none";
+      nextBtn.disabled = true;
+      loadQuestion();
+      startTimer();
+    }
+
+    function startTimer() {
+      clearInterval(interval);
+      interval = setInterval(() => {
+        timer--;
+        timerEl.innerText = `Time: ${timer}s`;
+        if (timer <= 0) {
+          clearInterval(interval);
+          showResult();
+        }
+      }, 1000);
+    }
+
+    function loadQuestion() {
+      nextBtn.disabled = true;
+      const q = questions[currentIndex];
+      questionEl.innerText = q.q;
+      progressEl.innerText = `Question ${currentIndex + 1} of ${questions.length}`;
+      optionsEl.innerHTML = "";
+
+      q.options.forEach((opt, i) => {
+        const btn = document.createElement("div");
+        btn.classList.add("option");
+        btn.innerText = opt;
+        btn.onclick = () => checkAnswer(i, btn);
+        optionsEl.appendChild(btn);
+      });
+    }
+
+    function checkAnswer(selected, btn) {
+      const q = questions[currentIndex];
+      const allBtns = document.querySelectorAll(".option");
+      allBtns.forEach(b => b.style.pointerEvents = "none");
+
+      if (selected === q.correct) {
+        btn.classList.add("correct");
+        score++;
+      } else {
+        btn.classList.add("wrong");
+        allBtns[q.correct].classList.add("correct");
+      }
+
+      nextBtn.disabled = false;
+    }
+
+    nextBtn.addEventListener("click", () => {
+      currentIndex++;
+      if (currentIndex < questions.length) {
+        loadQuestion();
+      } else {
+        showResult();
+      }
+    });
+
+    function showResult() {
+      clearInterval(interval);
+      quizBox.style.display = "none";
+      resultBox.style.display = "block";
+
+      document.getElementById("scoreCount").innerText = `${score}/${questions.length}`;
+      const xp = score * 50 + Math.max(0, timer) * 2;
+      document.getElementById("xpPoints").innerText = xp;
+
+      // Remove old buttons if any
+      resultBox.querySelectorAll(".action-btn").forEach(b => b.remove());
+
+      // Retry button
+      const retryBtn = document.createElement("button");
+      retryBtn.innerText = "Retry Challenge";
+      retryBtn.classList.add("retry-btn", "action-btn");
+      retryBtn.onclick = startChallenge;
+      resultBox.appendChild(retryBtn);
+
+      // Next Level button if score >= 80%
+      const percent = (score / questions.length) * 100;
+      if (percent >= 80) {
+        const nextLevelBtn = document.createElement("button");
+        nextLevelBtn.innerText = "Next Level 🌟";
+        nextLevelBtn.classList.add("next-btn", "action-btn");
+        nextLevelBtn.onclick = () => {
+          // Redirect to super-hard challenge
+          window.location.href = "super-challenge.html";
+        };
+        resultBox.appendChild(nextLevelBtn);
+      }
+    }
+
+    // Start automatically
+    startChallenge();
+  </script>
+
+</body>
+</html>

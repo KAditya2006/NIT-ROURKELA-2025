@@ -25,36 +25,16 @@
     <h2>🏆 Challenge Complete!</h2>
     <p>You answered <span id="scoreCount"></span> questions correctly.</p>
     <p class="xp">🎯 XP Earned: <span id="xpPoints"></span></p>
-    <button class="retry-btn" onclick="startChallenge()">Retry Challenge</button>
+    <!-- Removed the static Retry button -->
   </div>
 
   <script>
     const questions = [
-      {
-        q: "Which HTML tag is used to create a hyperlink?",
-        options: ["<a>", "<link>", "<href>", "<url>"],
-        correct: 0
-      },
-      {
-        q: "Which CSS property controls text size?",
-        options: ["font-size", "text-style", "font-weight", "text-size"],
-        correct: 0
-      },
-      {
-        q: "Inside which HTML element do we put JavaScript?",
-        options: ["<js>", "<scripting>", "<script>", "<code>"],
-        correct: 2
-      },
-      {
-        q: "Which company developed JavaScript?",
-        options: ["Google", "Netscape", "Microsoft", "IBM"],
-        correct: 1
-      },
-      {
-        q: "Which symbol is used for comments in JS?",
-        options: ["//", "/*", "#", "<!-- -->"],
-        correct: 0
-      }
+      { q: "Which HTML tag is used to create a hyperlink?", options: ["<a>", "<link>", "<href>", "<url>"], correct: 0 },
+      { q: "Which CSS property controls text size?", options: ["font-size", "text-style", "font-weight", "text-size"], correct: 0 },
+      { q: "Inside which HTML element do we put JavaScript?", options: ["<js>", "<scripting>", "<script>", "<code>"], correct: 2 },
+      { q: "Which company developed JavaScript?", options: ["Google", "Netscape", "Microsoft", "IBM"], correct: 1 },
+      { q: "Which symbol is used for comments in JS?", options: ["//", "/*", "#", "<!-- -->"], correct: 0 }
     ];
 
     let currentIndex = 0;
@@ -112,7 +92,6 @@
     function checkAnswer(selected, btn) {
       const q = questions[currentIndex];
       const allBtns = document.querySelectorAll(".option");
-
       allBtns.forEach(b => b.style.pointerEvents = "none");
 
       if (selected === q.correct) {
@@ -139,9 +118,34 @@
       clearInterval(interval);
       quizBox.style.display = "none";
       resultBox.style.display = "block";
+
       document.getElementById("scoreCount").innerText = `${score}/${questions.length}`;
-      const xp = score * 50 + Math.max(0, timer) * 2; // XP based on performance
+      const xp = score * 50 + Math.max(0, timer) * 2;
       document.getElementById("xpPoints").innerText = xp;
+
+      // Remove old buttons inside resultBox (if any)
+      resultBox.querySelectorAll(".action-btn").forEach(b => b.remove());
+
+      // Always show retry button
+      const retryBtn = document.createElement("button");
+      retryBtn.innerText = "Retry Challenge";
+      retryBtn.classList.add("retry-btn", "action-btn");
+      retryBtn.onclick = startChallenge;
+      resultBox.appendChild(retryBtn);
+
+      // Show next challenge button if score >= 80%
+      const percent = (score / questions.length) * 100;
+      if (percent >= 80) {
+        const nextChallengeBtn = document.createElement("button");
+        nextChallengeBtn.innerText = "Next Challenge";
+        nextChallengeBtn.classList.add("next-btn", "action-btn");
+        nextChallengeBtn.onclick = () => {
+          alert("🎉 Moving to the next challenge!");
+          // Example: redirect to next challenge page
+          window.location.href = "next-challenge.html";
+        };
+        resultBox.appendChild(nextChallengeBtn);
+      }
     }
 
     // Start automatically

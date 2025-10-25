@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Super Challenge | InternLearn</title>
+  <link rel="stylesheet" href="challenge-mode.css">
+ 
+</head>
+<body>
+
+  <div class="container" id="quizBox">
+    <h1>🔥 Super Challenge - Expert Level</h1>
+    <div class="timer" id="timer">Time: 90s</div>
+    <div class="question" id="question">Loading...</div>
+    <div class="options" id="options"></div>
+
+    <div class="footer">
+      <div id="progress"></div>
+      <button class="next-btn" id="nextBtn" disabled>Next</button>
+    </div>
+  </div>
+
+  <div class="result-box" id="resultBox">
+    <h2>🏆 Super Challenge Complete!</h2>
+    <p>You answered <span id="scoreCount"></span> questions correctly.</p>
+    <p class="xp">🎯 XP Earned: <span id="xpPoints"></span></p>
+  </div>
+
+  <script>
+    // Expert-level questions
+    const questions = [
+      {
+        q: "What is the output of `[] + {}` in JavaScript?",
+        options: ["'[object Object]'", "'{}'", "'[]{}'", "Error"],
+        correct: 0
+      },
+      {
+        q: "Which CSS property allows you to control the stacking order of elements?",
+        options: ["z-index", "order", "stack", "layer"],
+        correct: 0
+      },
+      {
+        q: "Which JavaScript function is used to delay execution asynchronously?",
+        options: ["setTimeout()", "setInterval()", "sleep()", "wait()"],
+        correct: 0
+      },
+      {
+        q: "In CSS, what does `minmax()` function do?",
+        options: [
+          "Specifies a size range for grid tracks",
+          "Sets minimum and maximum font size",
+          "Limits the size of images",
+          "Creates responsive margins"
+        ],
+        correct: 0
+      },
+      {
+        q: "Which of the following is a feature of ES6?",
+        options: ["Arrow functions", "Var keyword only", "Function expressions only", "No classes"],
+        correct: 0
+      },
+      {
+        q: "Which event captures input before it is processed in JavaScript?",
+        options: ["input", "change", "keydown", "beforeinput"],
+        correct: 3
+      },
+      {
+        q: "What is the difference between `==` and `===` in JavaScript?",
+        options: [
+          "`==` checks value, `===` checks value and type",
+          "`==` checks type, `===` checks value",
+          "They are identical",
+          "Both perform type coercion always"
+        ],
+        correct: 0
+      },
+      {
+        q: "In CSS Grid, what does `auto-fit` do in `grid-template-columns`?",
+        options: [
+          "Fits as many columns as possible within container",
+          "Fixes the number of columns",
+          "Aligns items automatically",
+          "Sets columns width to auto only"
+        ],
+        correct: 0
+      },
+      {
+        q: "Which JS method copies object properties into a target object?",
+        options: ["Object.assign()", "Object.copy()", "Object.merge()", "Object.clone()"],
+        correct: 0
+      },
+      {
+        q: "What is the difference between `localStorage` and `sessionStorage`?",
+        options: [
+          "localStorage persists after closing the browser, sessionStorage does not",
+          "sessionStorage persists, localStorage does not",
+          "They are identical",
+          "sessionStorage is server-side only"
+        ],
+        correct: 0
+      }
+    ];
+
+    let currentIndex = 0;
+    let score = 0;
+    let timer = 90; // Expert level longer timer
+    let interval;
+
+    const questionEl = document.getElementById("question");
+    const optionsEl = document.getElementById("options");
+    const nextBtn = document.getElementById("nextBtn");
+    const timerEl = document.getElementById("timer");
+    const progressEl = document.getElementById("progress");
+    const quizBox = document.getElementById("quizBox");
+    const resultBox = document.getElementById("resultBox");
+
+    function startChallenge() {
+      currentIndex = 0;
+      score = 0;
+      timer = 90;
+      quizBox.style.display = "block";
+      resultBox.style.display = "none";
+      nextBtn.disabled = true;
+      loadQuestion();
+      startTimer();
+    }
+
+    function startTimer() {
+      clearInterval(interval);
+      interval = setInterval(() => {
+        timer--;
+        timerEl.innerText = `Time: ${timer}s`;
+        if (timer <= 0) {
+          clearInterval(interval);
+          showResult();
+        }
+      }, 1000);
+    }
+
+    function loadQuestion() {
+      nextBtn.disabled = true;
+      const q = questions[currentIndex];
+      questionEl.innerText = q.q;
+      progressEl.innerText = `Question ${currentIndex + 1} of ${questions.length}`;
+      optionsEl.innerHTML = "";
+
+      q.options.forEach((opt, i) => {
+        const btn = document.createElement("div");
+        btn.classList.add("option");
+        btn.innerText = opt;
+        btn.onclick = () => checkAnswer(i, btn);
+        optionsEl.appendChild(btn);
+      });
+    }
+
+    function checkAnswer(selected, btn) {
+      const q = questions[currentIndex];
+      const allBtns = document.querySelectorAll(".option");
+      allBtns.forEach(b => b.style.pointerEvents = "none");
+
+      if (selected === q.correct) {
+        btn.classList.add("correct");
+        score++;
+      } else {
+        btn.classList.add("wrong");
+        allBtns[q.correct].classList.add("correct");
+      }
+
+      nextBtn.disabled = false;
+    }
+
+    nextBtn.addEventListener("click", () => {
+      currentIndex++;
+      if (currentIndex < questions.length) {
+        loadQuestion();
+      } else {
+        showResult();
+      }
+    });
+
+    function showResult() {
+      clearInterval(interval);
+      quizBox.style.display = "none";
+      resultBox.style.display = "block";
+
+      document.getElementById("scoreCount").innerText = `${score}/${questions.length}`;
+      const xp = score * 100 + Math.max(0, timer) * 3; // more XP for expert
+      document.getElementById("xpPoints").innerText = xp;
+
+      // Remove old buttons
+      resultBox.querySelectorAll(".action-btn").forEach(b => b.remove());
+
+      // Retry button
+      const retryBtn = document.createElement("button");
+      retryBtn.innerText = "Retry Challenge";
+      retryBtn.classList.add("retry-btn", "action-btn");
+      retryBtn.onclick = startChallenge;
+      resultBox.appendChild(retryBtn);
+
+      // Next Level button (Optional for future super-levels)
+      const percent = (score / questions.length) * 100;
+      if (percent >= 80) {
+        const nextLevelBtn = document.createElement("button");
+        nextLevelBtn.innerText = "Next Level 🌟";
+        nextLevelBtn.classList.add("next-btn", "action-btn");
+        nextLevelBtn.onclick = () => {
+          alert("🎉 You completed the highest level! More levels coming soon!");
+        };
+        resultBox.appendChild(nextLevelBtn);
+      }
+    }
+
+    startChallenge();
+  </script>
+
+</body>
+</html>
