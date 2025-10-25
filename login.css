@@ -5,12 +5,13 @@
 
     body {
       margin: 0;
-      background: linear-gradient(135deg, #1e1e2f, #252540);
+      
       color: white;
       display: flex;
       align-items: center;
       justify-content: center;
       min-height: 100vh;
+      background-color: #000000;
     }
 
     .container {
@@ -24,7 +25,7 @@
 
     h2 {
       margin-bottom: 15px;
-      color: #4fc3f7;
+      color: #42b03e;
     }
 
     .tab-buttons {
@@ -46,7 +47,7 @@
     }
 
     .tab-buttons button.active {
-      background: #4fc3f7;
+      background: #3dda57;
       color: #000;
       font-weight: 600;
     }
@@ -89,7 +90,7 @@
       padding: 10px;
       text-align: center;
       border-radius: 8px;
-      border: 2px solid #4fc3f7;
+      border: 2px solid #56c56c;
       cursor: pointer;
       transition: 0.3s;
     }
@@ -102,7 +103,7 @@
 
     button.submit {
       padding: 10px;
-      background: #4fc3f7;
+      background: #58d450;
       color: black;
       font-weight: 600;
       border: none;
