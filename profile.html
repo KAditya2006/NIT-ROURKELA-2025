@@ -3,64 +3,76 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Profile & Skill Graph | Learn & Earn Portal</title>
-<link rel="stylesheet" href="profile.css">
+  <title>Sign Up | Learn & Earn Portal</title>
+  <link rel="stylesheet" href="profile.css">
 </head>
 <body>
-  <header>👤 My Profile & Skill Graph</header>
+  <div class="container">
+    <h1>Create Account</h1>
+    <p>Join our learning community</p>
+    
+    <form id="signupForm">
+      <input type="text" id="fullName" placeholder="Full Name" required>
+      <input type="email" id="email" placeholder="Email Address" required>
+      <input type="password" id="password" placeholder="Password" required>
+      <select id="role" required>
+        <option value="">Select Role</option>
+        <option value="student">Student</option>
+        <option value="developer">Developer</option>
+        <option value="designer">Designer</option>
+        <option value="professional">Working Professional</option>
+      </select>
+      <input type="text" id="title" placeholder="Job Title (Optional)">
+      <button type="submit">Sign Up</button>
+    </form>
 
-  <section class="profile-container">
-    <div class="profile-card">
-      <img src="https://cdn-icons-png.flaticon.com/512/1077/1077012.png" alt="Profile Picture">
-      <h2>Aditya Kumar</h2>
-      <p>Full Stack Developer Intern</p>
-      <div class="badge-section">
-        <h3>🏅 Badges</h3>
-        <div class="badges">
-          <div class="badge">Top Learner</div>
-          <div class="badge">100 Days Streak</div>
-          <div class="badge">AI Master</div>
-        </div>
-      </div>
+    <div class="links">
+      <a href="login.html">Already have an account? Login</a>
     </div>
+  </div>
 
-    <div class="graph-card">
-      <h3>📊 Skill Progress</h3>
-      <canvas id="skillGraph"></canvas>
-    </div>
-  </section>
-
-  <footer>© 2025 Learn & Earn | Designed with 💙 by Aditya</footer>
-
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script>
-    const ctx = document.getElementById('skillGraph').getContext('2d');
-    new Chart(ctx, {
-      type: 'radar',
-      data: {
-        labels: ['HTML', 'CSS', 'JavaScript', 'React', 'Node.js', 'Python', 'AI/ML'],
-        datasets: [{
-          label: 'Skill Level',
-          data: [95, 88, 92, 85, 80, 75, 78],
-          backgroundColor: 'rgba(79, 195, 247, 0.2)',
-          borderColor: '#4fc3f7',
-          borderWidth: 2,
-          pointBackgroundColor: '#ffffff'
-        }]
-      },
-      options: {
-        scales: {
-          r: {
-            angleLines: { color: 'rgba(255,255,255,0.1)' },
-            grid: { color: 'rgba(255,255,255,0.1)' },
-            pointLabels: { color: 'white', font: { size: 14 } },
-            suggestedMin: 0,
-            suggestedMax: 100
-          }
-        },
-        plugins: {
-          legend: { labels: { color: 'white' } }
-        }
+    document.getElementById('signupForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      // Get form values
+      const userData = {
+        fullName: document.getElementById('fullName').value,
+        email: document.getElementById('email').value,
+        role: document.getElementById('role').value,
+        title: document.getElementById('title').value || 'Learner',
+        joinDate: new Date().toISOString(),
+        isNewUser: true
+      };
+
+      // Store user data in localStorage
+      localStorage.setItem('currentUser', JSON.stringify(userData));
+      
+      // Set initial profile data
+      localStorage.setItem('userName', userData.fullName);
+      localStorage.setItem('userTitle', userData.title);
+      localStorage.setItem('userRole', userData.role);
+      localStorage.setItem('userEmail', userData.email);
+      localStorage.setItem('userJoinDate', userData.joinDate);
+      
+      // Redirect to profile page
+      window.location.href = 'profile.html';
+    });
+
+    // Auto-fill title based on role selection
+    document.getElementById('role').addEventListener('change', function() {
+      const role = this.value;
+      const titleInput = document.getElementById('title');
+      
+      const roleTitles = {
+        'student': 'Student',
+        'developer': 'Developer',
+        'designer': 'UI/UX Designer',
+        'professional': 'Professional'
+      };
+      
+      if (roleTitles[role] && !titleInput.value) {
+        titleInput.value = roleTitles[role];
       }
     });
   </script>

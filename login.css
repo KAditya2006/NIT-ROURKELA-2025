@@ -1,4 +1,4 @@
-* {
+   * {
       box-sizing: border-box;
       font-family: "Poppins", sans-serif;
     }
@@ -119,4 +119,8 @@
       color: #ff3333;
       font-size: 13px;
       text-align: center;
+    }
+
+    .title-input {
+      margin-top: 10px;
     }
