@@ -167,25 +167,8 @@
 
       alert("🎉 Signup successful! Welcome to Learn & Earn!");
       
-      // Redirect to appropriate page
-      redirectAfterSignup(selectedRole);
-    }
-
-    // --- Redirect based on role ---
-    function redirectAfterSignup(role) {
-      switch(role) {
-        case 'student':
-          window.location.href = "profile.html";
-          break;
-        case 'company':
-          window.location.href = "company-dashboard.html";
-          break;
-        case 'admin':
-          window.location.href = "admin-dashboard.html";
-          break;
-        default:
-          window.location.href = "profile.html";
-      }
+      // Redirect to appropriate page - CONSISTENT with login redirects
+      redirectUser(selectedRole, true); // true indicates it's after signup
     }
 
     // --- Login Function ---
@@ -214,15 +197,20 @@
 
       alert(`✅ Welcome back ${user.name}!`);
 
-      // Redirect based on role
-      redirectAfterLogin(user.role);
+      // Redirect based on role - CONSISTENT with signup redirects
+      redirectUser(user.role, false); // false indicates it's after login
     }
 
-    // --- Redirect after login ---
-    function redirectAfterLogin(role) {
+    // --- CONSISTENT Redirect Function for both Signup and Login ---
+    function redirectUser(role, isNewUser = false) {
       switch(role) {
         case 'student':
-          window.location.href = "learning-dashboard.html";
+          // For new students, show profile first, otherwise go to dashboard
+          if (isNewUser) {
+            window.location.href = "profile.html"; // Show profile for new students
+          } else {
+            window.location.href = "learning-dashboard.html"; // Regular dashboard for returning students
+          }
           break;
         case 'company':
           window.location.href = "company-dashboard.html";
@@ -276,6 +264,10 @@
         
         localStorage.setItem("users", JSON.stringify(users));
       }
+
+      // Auto-fill demo credentials for easier testing
+      document.getElementById('loginEmail').value = 'student@demo.com';
+      document.getElementById('loginPassword').value = 'demo123';
     });
   </script>
 </body>
