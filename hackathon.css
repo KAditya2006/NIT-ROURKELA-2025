@@ -1,14 +1,14 @@
- * { margin: 0; padding: 0; box-sizing: border-box; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: 'Poppins', sans-serif;
-      background: radial-gradient(circle at top left, #0f2027, #203a43, #2c5364);
+      background: #000000;
       color: #fff;
       min-height: 100vh;
       overflow-x: hidden;
     }
 
     header {
-      background: rgba(0, 255, 255, 0.1);
+      background: rgba(0, 255, 0, 0.1);
       backdrop-filter: blur(8px);
       border-bottom: 1px solid rgba(255,255,255,0.15);
       padding: 20px 40px;
@@ -19,11 +19,11 @@
 
     header h1 {
       font-size: 22px;
-      color: #00ffff;
+      color: #00ff00;
     }
 
     header button {
-      background: #00ffff;
+      background: #ff6600;
       color: #111;
       padding: 10px 20px;
       border: none;
@@ -33,7 +33,7 @@
       transition: 0.3s;
     }
     header button:hover {
-      background: #00c2c2;
+      background: #ff4500;
     }
 
     .container {
@@ -47,14 +47,14 @@
       background: rgba(255,255,255,0.08);
       border-radius: 14px;
       padding: 25px;
-      box-shadow: 0 0 20px rgba(0,255,255,0.1);
+      box-shadow: 0 0 20px rgba(0,255,0,0.1);
       transition: 0.3s;
       position: relative;
       overflow: hidden;
     }
     .card:hover {
       transform: translateY(-6px);
-      box-shadow: 0 0 25px rgba(0,255,255,0.3);
+      box-shadow: 0 0 25px rgba(0,255,0,0.3);
     }
 
     .card::before {
@@ -63,13 +63,13 @@
       top: 0; left: -100%;
       width: 100%;
       height: 100%;
-      background: linear-gradient(120deg, transparent, rgba(0,255,255,0.3), transparent);
+      background: linear-gradient(120deg, transparent, rgba(0,255,0,0.3), transparent);
       transition: 0.5s;
     }
     .card:hover::before { left: 100%; }
 
     .card h2 {
-      color: #00ffff;
+      color: #00ff00;
       font-size: 20px;
       margin-bottom: 10px;
     }
@@ -88,7 +88,7 @@
     }
 
     .join-btn {
-      background: #00ffff;
+      background: #ff6600;
       color: #111;
       border: none;
       padding: 10px 20px;
@@ -98,7 +98,7 @@
       transition: 0.3s;
     }
     .join-btn:hover {
-      background: #00c2c2;
+      background: #ff4500;
     }
 
     .status {
@@ -110,7 +110,7 @@
       margin-bottom: 10px;
     }
 
-    .ongoing { background: rgba(0,255,0,0.2); color: #00ff99; }
+    .ongoing { background: rgba(0,255,0,0.2); color: #00ff00; }
     .upcoming { background: rgba(255,255,0,0.2); color: #ffff66; }
     .ended { background: rgba(255,0,0,0.2); color: #ff6666; }
 
@@ -123,13 +123,13 @@
       align-items: center;
     }
     .popup-content {
-      background: #16213e;
+      background: #111111;
       padding: 30px;
       border-radius: 10px;
       width: 400px;
       text-align: center;
     }
-    .popup-content h2 { color: #00ffff; }
+    .popup-content h2 { color: #00ff00; }
     .popup-content input {
       width: 90%;
       margin: 10px 0;
@@ -148,5 +148,5 @@
       font-weight: 600;
       cursor: pointer;
     }
-    .submit-btn { background: #00ffff; color: #111; }
-    .cancel-btn { background: #ff6666; color: #fff; }
+    .submit-btn { background: #ff6600; color: #111; }
+    .cancel-btn { background: #ff3333; color: #fff; }

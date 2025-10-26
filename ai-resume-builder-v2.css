@@ -1,9 +1,9 @@
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
 
     * { box-sizing: border-box; }
     body {
       font-family: 'Poppins', sans-serif;
-      background: radial-gradient(circle at top left, #0f2027, #203a43, #2c5364);
+      background: #000000;
       color: white;
       min-height: 100vh;
       padding: 30px;
@@ -14,7 +14,7 @@
 
     h1 {
       font-size: 2.2em;
-      color: #00ffff;
+      color: #00ff00;
       margin-bottom: 15px;
     }
 
@@ -54,7 +54,7 @@
     }
 
     button {
-      background: #00ffff;
+      background: #ff6600;
       border: none;
       color: #111;
       font-weight: 600;
@@ -63,11 +63,11 @@
       cursor: pointer;
       transition: 0.3s;
     }
-    button:hover { background: #00c2c2; }
+    button:hover { background: #ff4500; }
 
     .preview-card {
-      background: white;
-      color: black;
+      background: #111111;
+      color: white;
       border-radius: 12px;
       padding: 25px;
       height: 100%;
@@ -88,9 +88,9 @@
 
     .template-btn {
       flex: 1;
-      border: 2px solid #00ffff;
+      border: 2px solid #00ff00;
       background: transparent;
-      color: #00ffff;
+      color: #00ff00;
       padding: 8px;
       border-radius: 8px;
       cursor: pointer;
@@ -98,17 +98,17 @@
     }
 
     .template-btn.active, .template-btn:hover {
-      background: #00ffff;
+      background: #00ff00;
       color: #111;
     }
 
     .resume-header {
-      border-bottom: 2px solid #00ffff;
+      border-bottom: 2px solid #00ff00;
       margin-bottom: 10px;
     }
 
     .ai-summary {
-      color: #00aaff;
+      color: #ff6600;
       font-style: italic;
       margin: 8px 0 14px 0;
     }

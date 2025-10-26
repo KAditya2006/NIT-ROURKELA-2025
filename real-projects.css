@@ -2,13 +2,13 @@
 
     body {
       font-family: 'Poppins', sans-serif;
-      background: radial-gradient(circle at top right, #0f2027, #203a43, #2c5364);
+      background: #000000;
       color: #fff;
       min-height: 100vh;
     }
 
     header {
-      background: rgba(0, 255, 255, 0.1);
+      background: rgba(0, 255, 0, 0.1);
       backdrop-filter: blur(10px);
       border-bottom: 1px solid rgba(255,255,255,0.2);
       padding: 20px 40px;
@@ -18,12 +18,12 @@
     }
 
     header h1 {
-      color: #00ffff;
+      color: #00ff00;
       font-size: 22px;
     }
 
     header button {
-      background: #00ffff;
+      background: #ff6600;
       color: #111;
       border: none;
       border-radius: 6px;
@@ -33,7 +33,7 @@
       transition: 0.3s;
     }
     header button:hover {
-      background: #00c2c2;
+      background: #ff4500;
     }
 
     .container {
@@ -47,14 +47,14 @@
       background: rgba(255,255,255,0.08);
       border-radius: 14px;
       padding: 25px;
-      box-shadow: 0 0 15px rgba(0,255,255,0.1);
+      box-shadow: 0 0 15px rgba(0,255,0,0.1);
       transition: 0.3s;
       position: relative;
       overflow: hidden;
     }
     .card:hover {
       transform: translateY(-6px);
-      box-shadow: 0 0 25px rgba(0,255,255,0.3);
+      box-shadow: 0 0 25px rgba(0,255,0,0.3);
     }
     .card::before {
       content: "";
@@ -62,13 +62,13 @@
       top: 0; left: -100%;
       width: 100%;
       height: 100%;
-      background: linear-gradient(120deg, transparent, rgba(0,255,255,0.3), transparent);
+      background: linear-gradient(120deg, transparent, rgba(0,255,0,0.3), transparent);
       transition: 0.5s;
     }
     .card:hover::before { left: 100%; }
 
     .company {
-      color: #00ffff;
+      color: #00ff00;
       font-weight: 600;
       font-size: 18px;
       margin-bottom: 6px;
@@ -95,7 +95,7 @@
     }
 
     .apply-btn {
-      background: #00ffff;
+      background: #ff6600;
       color: #111;
       border: none;
       padding: 10px 20px;
@@ -105,13 +105,13 @@
       transition: 0.3s;
     }
     .apply-btn:hover {
-      background: #00c2c2;
+      background: #ff4500;
     }
 
     .tag {
       display: inline-block;
-      background: rgba(0,255,255,0.15);
-      color: #00ffff;
+      background: rgba(0,255,0,0.15);
+      color: #00ff00;
       font-size: 12px;
       border-radius: 20px;
       padding: 4px 10px;
@@ -129,7 +129,7 @@
     }
 
     .popup-content {
-      background: #16213e;
+      background: #111111;
       padding: 30px;
       border-radius: 12px;
       width: 400px;
@@ -137,7 +137,7 @@
     }
 
     .popup-content h2 {
-      color: #00ffff;
+      color: #00ff00;
       margin-bottom: 10px;
     }
 
@@ -167,5 +167,5 @@
       cursor: pointer;
     }
 
-    .submit-btn { background: #00ffff; color: #111; }
-    .cancel-btn { background: #ff6666; color: white; }
+    .submit-btn { background: #ff6600; color: #111; }
+    .cancel-btn { background: #ff3333; color: white; }

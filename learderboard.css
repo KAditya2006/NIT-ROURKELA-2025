@@ -1,12 +1,12 @@
- body {
+body {
       margin: 0;
       font-family: "Poppins", sans-serif;
-      background: linear-gradient(135deg, #dfe9f3 0%, #ffffff 100%);
-      color: #333;
+      background: #000000;
+      color: #fff;
     }
 
     header {
-      background: linear-gradient(to right, #182848, #4b6cb7);
+      background: #111111;
       color: white;
       padding: 15px 40px;
       display: flex;
@@ -16,11 +16,12 @@
 
     header h1 {
       font-size: 22px;
+      color: #00ff00;
     }
 
     header button {
-      background: white;
-      color: #182848;
+      background: #ff6600;
+      color: #000000;
       border: none;
       padding: 8px 16px;
       border-radius: 8px;
@@ -32,7 +33,7 @@
       max-width: 1000px;
       margin: 40px auto;
       padding: 30px;
-      background: white;
+      background: #111111;
       border-radius: 16px;
       box-shadow: 0 4px 15px rgba(0,0,0,0.1);
     }
@@ -44,7 +45,7 @@
 
     .user-summary h2 {
       margin: 10px 0;
-      color: #182848;
+      color: #00ff00;
     }
 
     .stats {
@@ -55,7 +56,7 @@
     }
 
     .stat-box {
-      background: #f2f6ff;
+      background: #222222;
       padding: 20px;
       border-radius: 12px;
       width: 160px;
@@ -66,12 +67,12 @@
     .stat-box h3 {
       margin: 0;
       font-size: 24px;
-      color: #4b6cb7;
+      color: #ff6600;
     }
 
     .stat-box p {
       margin: 5px 0 0;
-      color: #555;
+      color: #ccc;
       font-size: 14px;
     }
 
@@ -81,7 +82,7 @@
 
     .leaderboard h2 {
       text-align: center;
-      color: #182848;
+      color: #00ff00;
     }
 
     table {
@@ -93,16 +94,16 @@
     th, td {
       padding: 12px 15px;
       text-align: left;
-      border-bottom: 1px solid #ddd;
+      border-bottom: 1px solid #333;
     }
 
     th {
-      background: #4b6cb7;
-      color: white;
+      background: #ff6600;
+      color: #000000;
     }
 
     tr:hover {
-      background: #f2f6ff;
+      background: #222222;
     }
 
     .gold {
@@ -126,8 +127,8 @@
     }
 
     .reward-section button {
-      background: #4b6cb7;
-      color: white;
+      background: #ff6600;
+      color: #000000;
       border: none;
       padding: 12px 24px;
       border-radius: 10px;
@@ -139,8 +140,8 @@
       width: 60px;
       height: 60px;
       border-radius: 50%;
-      background: #4b6cb7;
-      color: white;
+      background: #ff6600;
+      color: #000000;
       display: flex;
       align-items: center;
       justify-content: center;

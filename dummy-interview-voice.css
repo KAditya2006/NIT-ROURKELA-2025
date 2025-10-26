@@ -1,13 +1,13 @@
 :root {
-  --bg: #0f1724;
-  --card: #0b1220;
-  --accent: #00e0ff;
+  --bg: #000000;
+  --card: #111111;
+  --accent: #00ff00;
 }
 body {
   font-family: Inter, system-ui, Arial;
   margin: 0;
   min-height: 100vh;
-  background: linear-gradient(180deg, #071029, #0f1724);
+  background: #000000;
   color: #e6f6ff;
   display: flex;
   align-items: center;
@@ -19,11 +19,7 @@ body {
   max-width: 980px;
 }
 .card {
-  background: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.02),
-    rgba(255, 255, 255, 0.01)
-  );
+  background: rgba(255, 255, 255, 0.02);
   border: 1px solid rgba(255, 255, 255, 0.03);
   padding: 20px;
   border-radius: 12px;
@@ -58,7 +54,7 @@ header h1 {
   margin-top: 14px;
 }
 button {
-  background: var(--accent);
+  background: #ff6600;
   color: #042233;
   border: none;
   padding: 10px 14px;
@@ -80,8 +76,8 @@ button.secondary {
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background: #ff5b5b;
-  box-shadow: 0 0 8px #ff5b5b;
+  background: #ff3333;
+  box-shadow: 0 0 8px #ff3333;
   display: inline-block;
 }
 textarea {
@@ -115,11 +111,7 @@ textarea {
   justify-content: space-between;
   align-items: center;
   padding: 8px;
-  background: linear-gradient(
-    90deg,
-    rgba(255, 255, 255, 0.01),
-    rgba(255, 255, 255, 0.02)
-  );
+  background: rgba(255, 255, 255, 0.01);
   border-radius: 6px;
 }
 .bar {
@@ -131,7 +123,7 @@ textarea {
 .bar > i {
   display: block;
   height: 100%;
-  background: linear-gradient(90deg, var(--accent), #00a7ff);
+  background: #ff6600;
 }
 .small {
   font-size: 13px;

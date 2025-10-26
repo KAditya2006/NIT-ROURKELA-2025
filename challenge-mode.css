@@ -1,4 +1,4 @@
- * {
+* {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
@@ -6,8 +6,7 @@
     }
 
     body {
-      /* background: linear-gradient(135deg, #1a1a2e, #16213e); */
-      background-color: black;
+      background-color: #000000;
       color: white;
       min-height: 100vh;
       display: flex;
@@ -22,13 +21,13 @@
       border-radius: 16px;
       width: 90%;
       max-width: 600px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+      box-shadow: 0 10px 25px rgba(0, 255, 0, 0.25);
       text-align: center;
     }
 
     h1 {
       font-size: 28px;
-      color: #00ffff;
+      color: #00ff00;
       margin-bottom: 20px;
     }
 
@@ -52,18 +51,17 @@
     }
 
     .option:hover {
-      /* background: rgba(0,255,255,0.3); */
-      scale: 1.05;
+      background: rgba(0,255,0,0.2);
     }
 
     .option.correct {
-      background: #00ff99;
+      background: #00ff00;
       color: #111;
       font-weight: bold;
     }
 
     .option.wrong {
-      background: #ff4d4d;
+      background: #ff3333;
     }
 
     .footer {
@@ -76,12 +74,11 @@
     .timer {
       font-size: 18px;
       font-weight: 600;
-      color: #00ffff;
+      color: #ff6600;
     }
 
     .next-btn {
-      /* background: #00ffff; */
-      background-color: #49df2a;
+      background: #00ff00;
       color: #111;
       border: none;
       padding: 10px 20px;
@@ -92,9 +89,7 @@
     }
 
     .next-btn:hover {
-      /* background: #00c2c2; */
-      background-color: #31d41c;
-      scale: 1.08;
+      background: #00cc00;
     }
 
     .result-box {
@@ -104,18 +99,18 @@
     }
 
     .result-box h2 {
-      color: #00ff99;
+      color: #00ff00;
       margin-bottom: 10px;
     }
 
     .xp {
       font-size: 22px;
-      color: #00ffff;
+      color: #ff6600;
       margin: 8px 0;
     }
 
     .retry-btn {
-      background: #ef0606;
+      background: #ff3333;
       border: none;
       padding: 10px 20px;
       border-radius: 8px;
@@ -125,5 +120,5 @@
     }
 
     .retry-btn:hover {
-      background: #ff3333;
+      background: #ff0000;
     }

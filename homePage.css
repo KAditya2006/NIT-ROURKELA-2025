@@ -9,7 +9,7 @@
     }
 
     body {
-      background: linear-gradient(120deg, #001f3f, #002b55, #003366);
+      background: #000000;
       color: white;
       overflow-x: hidden;
     }
@@ -40,7 +40,7 @@
     header h1 {
       font-size: 1.8rem;
       letter-spacing: 1px;
-      color: #00e0ff;
+      color: #00ff00;
     }
 
     nav ul {
@@ -56,7 +56,7 @@
     }
 
     nav ul li a:hover {
-      color: #00e0ff;
+      color: #00ff00;
     }
 
     /* ===============================
@@ -68,7 +68,7 @@
       align-items: center;
       justify-content: space-between;
       padding: 0 80px;
-      background: linear-gradient(120deg, #001f3f, #003366);
+      background: #000000;
     }
 
     .hero-content {
@@ -79,7 +79,7 @@
     .hero-content h2 {
       font-size: 2.5rem;
       margin-bottom: 15px;
-      color: #00e0ff;
+      color: #00ff00;
     }
 
     .hero-content p {
@@ -97,25 +97,25 @@
     .btn {
       padding: 12px 28px;
       border-radius: 30px;
-      border: 2px solid #00e0ff;
+      border: 2px solid #00ff00;
       font-weight: 600;
       transition: 0.3s ease;
       cursor: pointer;
     }
 
     .btn.primary {
-      background: #00e0ff;
-      color: #001f3f;
+      background: #00ff00;
+      color: #000000;
     }
 
     .btn.primary:hover {
       background: transparent;
-      color: #00e0ff;
+      color: #00ff00;
     }
 
     .btn.secondary:hover {
-      background: #00e0ff;
-      color: #001f3f;
+      background: #00ff00;
+      color: #000000;
     }
 
     .hero-image {
@@ -126,7 +126,7 @@
     .hero-image img {
       width: 100%;
       border-radius: 20px;
-      box-shadow: 0 0 20px rgba(0,224,255,0.5);
+      box-shadow: 0 0 20px rgba(0,255,0,0.5);
     }
 
     /* ===============================
@@ -134,7 +134,7 @@
     =============================== */
     .info-section {
       padding: 100px 80px;
-      background: #00264d;
+      background: #111111;
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 60px;
@@ -151,12 +151,12 @@
 
     .info-card:hover {
       transform: translateY(-8px);
-      border-color: #00e0ff;
-      box-shadow: 0 0 15px rgba(0,224,255,0.2);
+      border-color: #00ff00;
+      box-shadow: 0 0 15px rgba(0,255,0,0.2);
     }
 
     .info-card h3 {
-      color: #00e0ff;
+      color: #00ff00;
       margin-bottom: 15px;
     }
 
@@ -171,7 +171,7 @@
     footer {
       text-align: center;
       padding: 30px;
-      background: #001a33;
+      background: #000000;
       color: #aaa;
       font-size: 0.9rem;
     }

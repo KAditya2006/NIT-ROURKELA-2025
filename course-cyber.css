@@ -1,4 +1,4 @@
-  * {
+* {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
@@ -6,7 +6,7 @@
     }
 
     body {
-      background-color: #0a0f1f;
+      background-color: #000000;
       color: #fff;
       display: flex;
       height: 100vh;
@@ -16,7 +16,7 @@
     /* Sidebar */
     .sidebar {
       width: 20%;
-      background: #141b2d;
+      background: #111111;
       display: flex;
       flex-direction: column;
       padding: 20px;
@@ -27,7 +27,7 @@
       margin-bottom: 20px;
       font-size: 1.4rem;
       text-align: center;
-      color: #00d4ff;
+      color: #00ff00;
     }
 
     .language {
@@ -42,23 +42,23 @@
 
     .language:hover,
     .language.active {
-      background: #00d4ff;
-      color: #0a0f1f;
+      background: #00ff00;
+      color: #000000;
       font-weight: 600;
     }
 
     /* Middle Section */
     .main {
       width: 55%;
-      background: #0f1629;
-      border-left: 1px solid #1e2b4a;
-      border-right: 1px solid #1e2b4a;
+      background: #111111;
+      border-left: 1px solid #333;
+      border-right: 1px solid #333;
       padding: 20px;
       overflow-y: auto;
     }
 
     .main h2 {
-      color: #00d4ff;
+      color: #00ff00;
       margin-bottom: 20px;
     }
 .level-map {
@@ -75,7 +75,7 @@
       height:100px;
       padding: 20px;
       border-radius: 12px;
-      background: #e8f5ec;
+      background: #222222;
       position: relative;
       text-align: center;
       cursor: pointer;
@@ -84,25 +84,23 @@
       display: flex;
       justify-content: center;
       align-items: center;
-    
-      
+      color: #fff;
     }
 
     .level:hover {
-      background: #00d4ff;
-      color: #0a0f1f;
+      background: #00ff00;
+      color: #000000;
       transform: scale(1.03);
     }
 
     .level::after {
-      /* content: ""; */
       position: absolute;
       bottom: -20px;
       left: 50%;
       transform: translateX(-50%);
       width: 2px;
       height: 20px;
-      background: #00d4ff;
+      background: #00ff00;
     }
 
     .level:last-child::after {
@@ -113,43 +111,42 @@
      .level1{
       position:absolute;
       top:0;
-        border:2 px solid #198754;
-
+      border:2px solid #00ff00;
     }
     .level2{
       position:absolute;
       top:100px;
       left:250px;
-        border:2 px solid #198754;
+      border:2px solid #00ff00;
     }
     .level3{
       position:absolute;
       top:200px;
-        border:2 px solid #198754;
+      border:2px solid #00ff00;
     }
     .level4{
       position:absolute;
       top:300px;
       left:250px;
-        border:2 px solid #198754;
+      border:2px solid #00ff00;
     }
     .level5{
       position:absolute;
       top:400px;
-        border:2 px solid #198754;
+      border:2px solid #00ff00;
     }
 
     .level6{
       position:absolute;
       top:500px;
       left:250px;
-        border:2 px solid #198754;
+      border:2px solid #00ff00;
     }
 
     /* Right Section */
     .message-panel {
       width: 25%;
-      background: #0f1629;
+      background: #111111;
       padding: 20px;
       display: flex;
       flex-direction: column;
@@ -157,16 +154,16 @@
     }
 
     .message-box {
-      background: #1a213a;
+      background: #222222;
       padding: 15px;
       border-radius: 10px;
       margin-bottom: 15px;
       font-size: 0.95rem;
-      border-left: 4px solid #00d4ff;
+      border-left: 4px solid #ff6600;
     }
 
     .video-box {
-      background: #1a213a;
+      background: #222222;
       border-radius: 10px;
       padding: 15px;
     }
@@ -181,8 +178,8 @@
     }
 
     .quiz-box button {
-      background: #00d4ff;
-      color: #0a0f1f;
+      background: #ff6600;
+      color: #000000;
       border: none;
       padding: 8px 16px;
       border-radius: 6px;
@@ -192,7 +189,7 @@
     }
 
     .quiz-box button:hover {
-      background: #00bde0;
+      background: #ff4500;
     }
 
     .message {
@@ -205,7 +202,7 @@
     }
 
     ::-webkit-scrollbar-thumb {
-      background-color: rgba(255, 255, 255, 0.2);
+      background-color: rgba(0, 255, 0, 0.2);
       border-radius: 4px;
     }
 

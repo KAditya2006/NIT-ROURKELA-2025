@@ -1,11 +1,10 @@
- * {
+* {
       box-sizing: border-box;
       font-family: "Poppins", sans-serif;
     }
 
     body {
       margin: 0;
-      
       color: white;
       display: flex;
       align-items: center;
@@ -25,7 +24,7 @@
 
     h2 {
       margin-bottom: 15px;
-      color: #42b03e;
+      color: #00ff00;
     }
 
     .tab-buttons {
@@ -47,7 +46,7 @@
     }
 
     .tab-buttons button.active {
-      background: #3dda57;
+      background: #ff6600;
       color: #000;
       font-weight: 600;
     }
@@ -90,20 +89,20 @@
       padding: 10px;
       text-align: center;
       border-radius: 8px;
-      border: 2px solid #56c56c;
+      border: 2px solid #00ff00;
       cursor: pointer;
       transition: 0.3s;
     }
 
     .role.active {
-      background: #4fc3f7;
+      background: #ff6600;
       color: black;
       font-weight: 600;
     }
 
     button.submit {
       padding: 10px;
-      background: #58d450;
+      background: #ff6600;
       color: black;
       font-weight: 600;
       border: none;
@@ -113,11 +112,11 @@
     }
 
     button.submit:hover {
-      background: #81d4fa;
+      background: #ff4500;
     }
 
     .error {
-      color: #ff6b6b;
+      color: #ff3333;
       font-size: 13px;
       text-align: center;
     }
